@@ -47,10 +47,10 @@ $resources_locations = array_filter($resources, function ($resource) {
   <? } ?>
 
   <li data-rel="inline">
-      <a href="#inlinecontent">Alle Termine</a>
+      <a href="#inline-dates">Alle Termine</a>
   </li>
 
-  <li id="inlinecontent">
+  <li id="inline-dates">
     <div>
         <? $sem = Seminar::getInstance($course->id) ?>
         <?= nl2br(Studip\Mobile\Helper::out($sem->getDatesExport())) ?>

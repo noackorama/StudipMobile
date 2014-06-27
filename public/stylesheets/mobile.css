@@ -2,16 +2,34 @@
   margin: .6em 10% .8em;
 }
 
+/* Controller: quickdial */
+#quickdial-index .ui-body-c {
+
+  background: url("../img/studip.png") 50% 95% no-repeat, -webkit-gradient(linear, left top, left bottom, from( #24437c /*{a-body-background-start}*/), to( #3C639E /*{a-body-background-end}*/)); /* Saf4+, Chrome */
+  background: url("../images/quickdial/studip.png") 50% 95% no-repeat, -webkit-linear-gradient(#24437c /*{a-body-background-start}*/, #3C639E /*{a-body-background-end}*/); /* Chrome 10+, Saf5.1+ */
+  background: url("../images/quickdial/studip.png") 50% 95% no-repeat,   -moz-linear-gradient(#24437c /*{a-body-background-start}*/, #3C639E /*{a-body-background-end}*/); /* FF3.6 */
+  background: url("../images/quickdial/studip.png") 50% 95% no-repeat,    -ms-linear-gradient(#24437c /*{a-body-background-start}*/, #3C639E /*{a-body-background-end}*/); /* IE10 */
+  background: url("../images/quickdial/studip.png") 50% 95% no-repeat,     -o-linear-gradient(#24437c /*{a-body-background-start}*/, #3C639E /*{a-body-background-end}*/); /* Opera 11.10+ */
+  background: url("../images/quickdial/studip.png") 50% 95% no-repeat,        linear-gradient(#24437c /*{a-body-background-start}*/, #3C639E /*{a-body-background-end}*/);
+}
+
 
 /* Controller: courses */
 
-#courses-index .ui-listview .ui-li-icon {
+#courses-index #courses.ui-listview .ui-li-icon {
   top: 1.3em;
 }
 
 #courses-show h4 {
   margin-top: -15px;
 }
+
+#courses-show #inline-dates {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+
 
 /* Controller: courses-files */
 #courses-list-files .file-size {
@@ -27,6 +45,13 @@
 
 #courses-list-files h2.course-title {
   font-weight: 300;
+}
+
+
+/* Controller: mails */
+#mails-index .message-author {
+  font-style: italic;
+  line-height: 16px;
 }
 
 /* misc */

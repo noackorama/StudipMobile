@@ -1,5 +1,7 @@
 <div data-role="panel" id="leftpanel" data-display="push" data-theme="a">
+    <!--
     <h2>Hallo, <?= $controller->currentUser()->vorname ?>!</h2>
+     -->
 
     <ul data-role="listview" data-theme="a" class="nav-search" data-inset="false" id="menu_side">
 
@@ -9,6 +11,13 @@
 <?=_("Start")?>
        </a>
      </li>
+
+      <li data-icon="false">
+        <a href="<?= $controller->url_for("courses") ?>" class="externallink contentLink" data-ajax="false">
+          <img src="<?= $plugin_path ?>/public/images/quickdial/bw/seminar.png"   class="ui-li-icon ui-corner-none" />
+          <?=_("Veranstaltungen")?>
+        </a>
+      </li>
 
       <li data-icon="false">
         <a href="<?= $controller->url_for("activities") ?>" class="externallink contentLink" data-ajax="false">
@@ -32,13 +41,6 @@
       </li>
 
       <li data-icon="false">
-        <a href="<?= $controller->url_for("courses") ?>" class="externallink contentLink" data-ajax="false">
-          <img src="<?= $plugin_path ?>/public/images/quickdial/bw/seminar.png"   class="ui-li-icon ui-corner-none" />
-          <?=_("Veranstaltungen")?>
-        </a>
-      </li>
-
-      <li data-icon="false">
         <a href="<?= $controller->url_for("profiles/show") ?>" class="externallink contentLink" data-ajax="false">
           <img src="<?= $plugin_path ?>/public/images/quickdial/bw/profile.png"   class="ui-li-icon ui-corner-none" />
           <?=_("Ich")?>
@@ -46,7 +48,7 @@
       </li>
 
       <li data-icon="false">
-        <a href="mailto:kursmanager@uos.de?subject=Stud.IP Mobile Feedback" class="externallink contentLink" data-ajax="false">
+        <a href="mailto:kursmanager@uos.de?subject=Stud.IP+Mobile+Feedback+<?= urlencode($GLOBALS['UNI_NAME_CLEAN']) ?>" class="externallink contentLink" data-ajax="false">
           <img src="<?= $plugin_path ?>/public/images/quickdial/bw/info-circle.png"   class="ui-li-icon ui-corner-none" />
           <?=_("Feedback")?>
         </a>
@@ -65,5 +67,6 @@
           <?=_("Desktop-Ansicht")?>
         </a>
       </li>
+
     </ul>
 </div><!-- /panel -->

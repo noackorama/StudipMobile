@@ -4,7 +4,7 @@
 
   <?= $this->render_partial("layouts/_side_menu") ?>
 
-  <div data-role="header"  data-theme="<?=TOOLBAR_THEME ?>">
+  <div data-role="header" data-theme="<?=TOOLBAR_THEME ?>">
   <? if (!$no_side_menu) echo $this->render_partial("layouts/_side_menu_link") ?>
     <h1><?= $page_title ?: 'Stud.IP' ?></h1>
 
@@ -14,6 +14,9 @@
   <div data-role="content">
         <?= $content_for_layout ?>
   </div><!-- /content -->
+
+  <?= isset($additional_footer) ? $additional_footer : '' ?>
+
 </div>
 
 <?= isset($additional_pages) ? $additional_pages : "" ?>

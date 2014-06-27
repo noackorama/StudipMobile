@@ -23,7 +23,7 @@ $this->set_layout("layouts/single_page");
   </a><br>
   <? endif ?>
 
-  <ul id="files" data-role="listview" data-split-icon="info" data-split-theme="d" data-filter="true">
+  <ul id="files" data-role="listview" data-split-icon="info" data-split-theme="d" data-filter="<?= sizeof($files) > 4 ? 'true' : '' ?>">
     <? foreach($files as $file) { ?>
 
       <?
