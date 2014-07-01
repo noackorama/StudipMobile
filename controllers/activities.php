@@ -14,8 +14,12 @@ use Studip\Mobile\Activity;
  */
 class ActivitiesController extends StudipMobileAuthenticatedController
 {
-    function index_action($seminar_cur = 0)
+    function index_action($seminar_filter = null)
     {
-        $this->activities = Activity::findAllByUser($this->currentUser()->id, $seminar_cur);
+        $this->activities = Activity::findAllByUser(
+            $this->currentUser()->id,
+            $seminar_filter,
+            \Request::int('days', 30));
     }
+
 }
