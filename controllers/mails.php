@@ -37,8 +37,7 @@ class MailsController extends StudipMobileAuthenticatedController
         $this->intervall = $intervall;
 
         //  if a message should be deleted
-        if ($delId != null)
-        {
+        if ($delId != null) {
             Mail::deleteMessage( $delId, $this->currentUser()->id);
         }
         //  get all messages
@@ -54,8 +53,7 @@ class MailsController extends StudipMobileAuthenticatedController
         $this->intervall = $intervall;
 
         //  if a message should be deleted
-        if ($delId != null)
-        {
+        if ($delId != null) {
             Mail::deleteMessage($delId, $this->currentUser()->id);
         }
         //  get all messages
@@ -76,21 +74,18 @@ class MailsController extends StudipMobileAuthenticatedController
     function write_action($empf = null)
     {
         if ($empf == null) {
-            
-            
-            
-    //        $this->members  = Mail::findAllInvolvedMembers( $this->currentUser()->id );
-            
-            
+
+            // $this->members  = Mail::findAllInvolvedMembers( $this->currentUser()->id );
+
             $stmt = DBManager::get()->prepare('SELECT user_id FROM contact '.
-                                                  'WHERE owner_id = ?');
-                
+            'WHERE owner_id = ?');
+
             $stmt->execute(array($this->currentUser()->id ));
             $contacts =  $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-            
+
             if(!empty($contacts)) {
                 $query = "SELECT auth_user_md5.user_id, auth_user_md5.Vorname, auth_user_md5.Nachname, user_info.title_front
-                              FROM   auth_user_md5 
+                              FROM   auth_user_md5
                               JOIN   user_info     ON auth_user_md5.user_id = user_info.user_id
                               WHERE auth_user_md5.user_id IN (:user_ids)
                               ORDER BY auth_user_md5.Nachname";
