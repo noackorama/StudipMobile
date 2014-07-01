@@ -2,11 +2,13 @@
 
 use Studip\Mobile\Helper;
 
-$page_title = 'Ankündigung: "' . Helper::out($news->topic) . '"';
+$this->set_layout("layouts/single_page");
+$page_title = _('Ankündigung');
 $page_id = "news-show";
 $back_button = true;
-$this->set_layout("layouts/single_page");
+?>
 
+<?
 $day = date("j.m.Y", $news->chdate);
 $time = date("H:i", $news->chdate);
 ?>
