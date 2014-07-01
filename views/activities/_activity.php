@@ -30,7 +30,7 @@ use Studip\Mobile\Helper as Helper;
 </p>
 
 <p class=summary>
-  <?= Helper::out($activity['content']) ?>
+  <?= Helper::out(strip_tags($activity['content'])) ?>
 </p>
 
 <? if (!empty($activity["link"])){ ?>
