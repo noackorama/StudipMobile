@@ -23,6 +23,10 @@ class Helper {
         return ($a["start"] < $b["start"]) ? -1 : 1;
     }
 
+    static function formatDate($date, $with_time = true)
+    {
+        return self::get_weekday(date("N", $date)) . date(" j. ", $date) . self::get_month(date("m", $date)) . ($with_time ? date(" Y H:i", $date) : '');
+    }
 
     static function stamp_to_dat($timestamp)
     {
