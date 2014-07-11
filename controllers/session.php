@@ -71,49 +71,19 @@ class SessionController extends Controller
 
     protected function start_session($user_id)
     {
+        $user = \User::find($user_id);
 
-        // TODO: für Stud.IP v2.3
-        if (is_callable(array('Seminar_User', 'start'))) {
-            global $perm, $user, $auth, $sess, $forced_language, $_language;
+        $GLOBALS['auth'] = new \Seminar_Auth();
+        $GLOBALS['auth']->auth = array(
+            'uid'   => $user->user_id,
+            'uname' => $user->username,
+            'perm'  => $user->perms,
+            "auth_plugin" => $user->auth_plugin,
+        );
 
+        $GLOBALS['user'] = new \Seminar_User($user);
 
-            $user = new Seminar_User();
-            $user->start($user_id);
-
-            foreach (array(
-                         "uid" => $user_id,
-                         "perm" => $user->perms,
-                         "uname" => $user->username,
-                         "auth_plugin" => $user->auth_plugin,
-                         "exp" => time() + 60 * 15,
-                         "refresh" => time()
-                     ) as $k => $v) {
-                $auth->auth[$k] = $v;
-            }
-
-            $auth->nobody = false;
-
-            $sess->regenerate_session_id(array('auth', 'forced_language','_language'));
-            $sess->freeze();
-        }
-
-        // TODO: für Stud.IP v2.5
-        else {
-
-            $user = User::find($user_id);
-
-            $GLOBALS['auth'] = new Seminar_Auth();
-            $GLOBALS['auth']->auth = array(
-                'uid'   => $user->user_id,
-                'uname' => $user->username,
-                'perm'  => $user->perms,
-                "auth_plugin" => $user->auth_plugin,
-            );
-
-            $GLOBALS['user'] = new Seminar_User($user);
-
-            $GLOBALS['perm'] = new Seminar_Perm();
-            $GLOBALS['MAIL_VALIDATE_BOX'] = false;
-        }
+        $GLOBALS['perm'] = new \Seminar_Perm();
+        $GLOBALS['MAIL_VALIDATE_BOX'] = false;
     }
 }

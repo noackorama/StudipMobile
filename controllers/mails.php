@@ -28,22 +28,6 @@ class MailsController extends AuthenticatedController
     }
 
     /**
-     * lists mails of inbox
-     */
-    function list_inbox_action($intervall = 0, $delId = null)
-    {
-        //  set intervall for the messages
-        $this->intervall = $intervall;
-
-        //  if a message should be deleted
-        if ($delId != null) {
-            Mail::deleteMessage( $delId, $this->currentUser()->id);
-        }
-        //  get all messages
-        $this->inbox = Mail::findAllByUser($this->currentUser()->id, $intervall, true);
-    }
-
-    /**
      * lists mails of outbox
      */
     function list_outbox_action($intervall = 0, $delId = null )
@@ -99,11 +83,6 @@ class MailsController extends AuthenticatedController
 
         } else {
             $this->empfData = User::find($empf);
-
-            // pre 2.5 check
-            if (method_exists($this->empfData, 'getData')) {
-                $this->empfData = $this->empfData->getData();
-            }
         }
     }
 
