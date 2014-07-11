@@ -54,6 +54,26 @@
   line-height: 16px;
 }
 
+#mails-index .mail-attachment {
+  vertical-align: text-top;
+}
+
+#mail-show .message-author {
+  padding-top: 12px;
+}
+
+#mail-show .message-body {
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  white-space: normal;
+  padding-top: 1em;
+}
+
+#mail-show .empty {
+  font-style: italic;
+}
+
 /* misc */
 
 img.icon {
