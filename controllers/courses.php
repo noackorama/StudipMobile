@@ -37,7 +37,7 @@ class CoursesController extends AuthenticatedController
         object_set_visit($id, 'documents');
     }
 
-    function show_action( $id = NULL )
+    function show_action($id = NULL)
     {
         // get specific course
         $this->course = Course::find($id);

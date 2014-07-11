@@ -13,12 +13,8 @@ require dirname(__FILE__) . "/../models/activity.php";
  */
 class ActivitiesController extends AuthenticatedController
 {
-    function index_action($seminar_filter = null)
+    function index_action($cid_filter = null)
     {
-        $this->activities = Activity::findAllByUser(
-            $this->currentUser()->id,
-            $seminar_filter,
-            \Request::int('days', 30));
+        $this->activities = Activity::findAllByUser($this->currentUser()->id, $cid_filter, \Request::int('days', 30));
     }
-
 }

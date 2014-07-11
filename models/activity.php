@@ -28,8 +28,6 @@ class Activity {
     private static function get_activities($user_id, $range, $days)
     {
 
-        # htmlReady("news/show/" . $row['news_id']),
-
         $db = \DBManager::get();
         $now = time();
         $chdate = $now - 24 * 60 * 60 * $days;
@@ -294,10 +292,17 @@ class Activity {
         }
 
         // get content-elements from all modules and plugins
-        $stmt = \DBManager::get()->prepare("SELECT seminare.* FROM seminar_user
-            LEFT JOIN seminare USING (Seminar_id)
-            WHERE user_id = ? ");
-        $stmt->execute(array($user_id));
+        if (isset($range)) {
+            $query = "SELECT seminare.* FROM seminar_user
+                      LEFT JOIN seminare USING (Seminar_id)
+                      WHERE user_id = :user_id AND Seminar_id = :seminar_id";
+        } else {
+            $query = "SELECT seminare.* FROM seminar_user
+                      LEFT JOIN seminare USING (Seminar_id)
+                      WHERE user_id = :user_id";
+        }
+        $stmt = \DBManager::get()->prepare($query);
+        $stmt->execute(array('user_id' => $user_id, 'seminar_id' => $range));
 
         // 'forum participants documents news scm schedule wiki vote literature elearning_interface'
         $module_slots = words('forum documents scm wiki');
