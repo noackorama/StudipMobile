@@ -30,10 +30,13 @@ class StudipMobile extends StudipPlugin implements SystemPlugin
         $inc_path = ini_get('include_path') . PATH_SEPARATOR . __DIR__ . '/vendor';
         ini_set('include_path', $inc_path);
 
+        require 'lib/dispatcher.php';
+
         $trails_root = $this->getPluginPath();
-        $dispatcher = new Trails_Dispatcher($trails_root,
-                                            rtrim(PluginEngine::getURL($this, null, ''), '/'),
-                                            self::DEFAULT_CONTROLLER);
+        $dispatcher = new \Studip\Mobile\Dispatcher(
+            $trails_root,
+            rtrim(PluginEngine::getURL($this, null, ''), '/'),
+            self::DEFAULT_CONTROLLER);
         $dispatcher->plugin = $this;
         $dispatcher->dispatch($unconsumed_path);
     }

@@ -1,9 +1,8 @@
 <?php
+namespace Studip\Mobile;
 
 require "StudipMobileAuthenticatedController.php";
 require dirname(__FILE__) . "/../models/quickdail.php";
-
-use Studip\Mobile\Quickdail;
 
 /**
  *    The Start Screen of studipmobile
@@ -11,7 +10,7 @@ use Studip\Mobile\Quickdail;
  *    @author Marcus Lunzenauer - mlunzena@uos.de
  *    @author André Klaßen - aklassen@uos.de
  */
-class QuickdialController extends StudipMobileAuthenticatedController
+class QuickdialController extends AuthenticatedController
 {
     function index_action()
     {

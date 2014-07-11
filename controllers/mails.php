@@ -1,9 +1,8 @@
 <?php
+namespace Studip\Mobile;
 
 require "StudipMobileAuthenticatedController.php";
 require dirname(__FILE__) . "/../models/mail.php";
-
-use Studip\Mobile\Mail;
 
 /**
  *    get th inbox and outbox, write and send mails
@@ -11,7 +10,7 @@ use Studip\Mobile\Mail;
  *    @author Marcus Lunzenauer - mlunzena@uos.de
  *    @author André Klaßen - aklassen@uos.de
  */
-class MailsController extends StudipMobileAuthenticatedController
+class MailsController extends AuthenticatedController
 {
     /**
      * lists mails of inbox
@@ -77,11 +76,11 @@ class MailsController extends StudipMobileAuthenticatedController
 
             // $this->members  = Mail::findAllInvolvedMembers( $this->currentUser()->id );
 
-            $stmt = DBManager::get()->prepare('SELECT user_id FROM contact '.
+            $stmt = \DBManager::get()->prepare('SELECT user_id FROM contact '.
             'WHERE owner_id = ?');
 
             $stmt->execute(array($this->currentUser()->id ));
-            $contacts =  $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+            $contacts =  $stmt->fetchAll(\PDO::FETCH_COLUMN, 0);
 
             if(!empty($contacts)) {
                 $query = "SELECT auth_user_md5.user_id, auth_user_md5.Vorname, auth_user_md5.Nachname, user_info.title_front
@@ -113,8 +112,8 @@ class MailsController extends StudipMobileAuthenticatedController
      */
     function send_action($empf)
     {
-        $betreff     = Request::get("mail_title");
-        $nachricht   = Request::get("mail_message");
+        $betreff     = \Request::get("mail_title");
+        $nachricht   = \Request::get("mail_message");
 
         # TODO checken!
         $this->sendmessage = Mail::send( $empf, $betreff, $nachricht, $this->currentUser()->id );

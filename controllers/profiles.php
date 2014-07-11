@@ -1,16 +1,14 @@
 <?php
+namespace Studip\Mobile;
 
 require "StudipMobileAuthenticatedController.php";
 require dirname(__FILE__) . "/../models/profile.php";
-
-use Studip\Mobile\Activity;
-use Studip\Mobile\Profile;
 
 /**
  *    get the profile of a user, if visible
  *    @author Nils Bussmann - nbussman@uos.de
  */
-class ProfilesController extends StudipMobileAuthenticatedController
+class ProfilesController extends AuthenticatedController
 {
     function index_action()
     {

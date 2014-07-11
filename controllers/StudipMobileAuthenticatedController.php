@@ -1,4 +1,5 @@
 <?php
+namespace Studip\Mobile;
 
 require_once 'StudipMobileController.php';
 
@@ -8,7 +9,7 @@ require_once 'StudipMobileController.php';
  *    @author André Klaßen - aklassen@uos.de
  *    @author Nils Bussmann - nbussman@uos.de
  */
-class StudipMobileAuthenticatedController extends StudipMobileController
+class AuthenticatedController extends Controller
 {
     function before_filter(&$action, &$args)
     {

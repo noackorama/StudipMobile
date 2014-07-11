@@ -1,16 +1,15 @@
 <?php
+namespace Studip\Mobile;
 
 require "StudipMobileAuthenticatedController.php";
 require dirname(__FILE__) . "/../models/course.php";
-
-use Studip\Mobile\Course;
 
 /**
  *    get the courses and all combined stuff, like files and
  *    members ...
  *    @author Nils Bussmann - nbussman@uos.de
  */
-class CoursesController extends StudipMobileAuthenticatedController
+class CoursesController extends AuthenticatedController
 {
     function index_action()
     {
@@ -26,7 +25,7 @@ class CoursesController extends StudipMobileAuthenticatedController
         $this->course = Course::find($id);
 
         if (!Course::isReadable($id, $this->currentUser()->id)) {
-            throw new Trails_Exception(403);
+            throw new \Trails_Exception(403);
         }
 
         // give seminarId to the view
@@ -47,20 +46,20 @@ class CoursesController extends StudipMobileAuthenticatedController
 
         //exception if course is not readable
         if (!$this->course) {
-            throw new Trails_Exception(404);
+            throw new \Trails_Exception(404);
         }
 
         if (!Course::isReadable($id, $this->currentUser()->id)) {
-            throw new Trails_Exception(403);
+            throw new \Trails_Exception(403);
         }
 
         $this->next_dates = array();
-        $termine = SeminarDB::getNextDate($id);
+        $termine = \SeminarDB::getNextDate($id);
         foreach ($termine["termin"] as $termin) {
-            $this->next_dates[] = new SingleDate($termin);
+            $this->next_dates[] = new \SingleDate($termin);
         }
         if ($termine["ex_termin"]) {
-            $this->next_dates[] = new SingleDate($termine["ex_termin"]);
+            $this->next_dates[] = new \SingleDate($termine["ex_termin"]);
         }
     }
 
@@ -72,7 +71,7 @@ class CoursesController extends StudipMobileAuthenticatedController
         $this->resources = Course::getResources($this->course);
 
         if (!Course::isReadable($id, $this->currentUser()->id)) {
-            throw new Trails_Exception(403);
+            throw new \Trails_Exception(403);
         }
     }
 
@@ -80,11 +79,11 @@ class CoursesController extends StudipMobileAuthenticatedController
     {
 
         if (!StudipMobile::DROPBOX_ENABLED) {
-            throw new Trails_Exception(400);
+            throw new \Trails_Exception(400);
         }
 
         if (!Course::isReadable($id, $this->currentUser()->id)) {
-            throw new Trails_Exception(403);
+            throw new \Trails_Exception(403);
         }
 
         //generate the callbacklink
@@ -106,8 +105,8 @@ class CoursesController extends StudipMobileAuthenticatedController
      */
     function upload_action( $fileid )
     {
-        if (!StudipMobile::DROPBOX_ENABLED) {
-            throw new Trails_Exception(400);
+        if (!\StudipMobile::DROPBOX_ENABLED) {
+            throw new \Trails_Exception(400);
         }
 
         // try to upload a specific file to the users dropboxs
@@ -122,8 +121,8 @@ class CoursesController extends StudipMobileAuthenticatedController
      */
     function createDropboxFolder_action( $semId )
     {
-        if (!StudipMobile::DROPBOX_ENABLED) {
-            throw new Trails_Exception(400);
+        if (!\StudipMobile::DROPBOX_ENABLED) {
+            throw new \Trails_Exception(400);
         }
 
         $this->createdFolderInfo = Course::createDropboxFolders( $semId );
@@ -138,13 +137,13 @@ class CoursesController extends StudipMobileAuthenticatedController
     function show_members_action($semId)
     {
         if (!Course::isReadable($semId, $this->currentUser()->id)) {
-            throw new Trails_Exception(403);
+            throw new \Trails_Exception(403);
         }
         $this->course = Course::find($semId);
 
         $count = $this->course->countMembers($semId);
 
-        if (Request::submitted("deep") || $count <= self::MEMBER_THRESHOLD) {
+        if (\Request::submitted("deep") || $count <= self::MEMBER_THRESHOLD) {
             $this->members = Course::getMembers($semId);
         }
     }
@@ -157,10 +156,10 @@ class CoursesController extends StudipMobileAuthenticatedController
     {
 
         // TODO (mlunzena) clear up this method
-        throw new Trails_Exception(500, "Not implemented.");
+        throw new \Trails_Exception(500, "Not implemented.");
 
-        if (!StudipMobile::DROPBOX_ENABLED) {
-            throw new Trails_Exception(400);
+        if (!\StudipMobile::DROPBOX_ENABLED) {
+            throw new \Trails_Exception(400);
         }
 
         $call_back_link         = $_SERVER['HTTP_HOST'].$this->url_for("courses/dropfiles", htmlReady($id) );

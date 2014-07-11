@@ -1,15 +1,14 @@
 <?php
+namespace Studip\Mobile;
 
 require "StudipMobileAuthenticatedController.php";
 require dirname(__FILE__) . "/../models/calendar.php";
-
-use Studip\Mobile\CalendarModel;
 
 /**
  * Get cycle events and dates for schedule and calendar
  * @author Nils Bussmann - nbussman@uos.de
  */
-class CalendarController extends StudipMobileAuthenticatedController
+class CalendarController extends AuthenticatedController
 {
     function index_action($weekday = NULL)
     {

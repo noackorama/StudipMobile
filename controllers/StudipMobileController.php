@@ -1,4 +1,5 @@
 <?php
+namespace Studip\Mobile;
 
 require_once $this->trails_root .'/models/helper.php';
 
@@ -13,7 +14,7 @@ define("STANDARD_DIVIDER",      "a");
  *    @author André Klaßen - aklassen@uos.de
  *    @author Nils Bussmann - nbussman@uos.de
  */
-class StudipMobileController extends Trails_Controller
+class Controller extends \Trails_Controller
 {
 
     /**
@@ -26,7 +27,7 @@ class StudipMobileController extends Trails_Controller
      */
     function before_filter(&$action, &$args)
     {
-        $this->plugin_path = URLHelper::getURL($this->dispatcher->plugin->getPluginPath());
+        $this->plugin_path = \URLHelper::getURL($this->dispatcher->plugin->getPluginPath());
         list($this->plugin_path) = explode("?cid=",$this->plugin_path);
 
         // notify on mobile trails action
@@ -34,10 +35,10 @@ class StudipMobileController extends Trails_Controller
         $name = sprintf('mobile.performed.%s_%s', $klass, $action);
         \NotificationCenter::postNotification($name, $this);
 
-        $this->flash = Trails_Flash::instance();
+        $this->flash = \Trails_Flash::instance();
 
         // notify on automatic redirect
-        if (Request::submitted("redirected")) {
+        if (\Request::submitted("redirected")) {
             \NotificationCenter::postNotification("mobile.ClientDidRedirect", $this);
         }
     }
@@ -93,7 +94,7 @@ class StudipMobileController extends Trails_Controller
 
     function url_for($to)
     {
-        if (Studip\Mobile\Helper::isExternalLink($to)) {
+        if (Helper::isExternalLink($to)) {
             return $to;
         }
 
@@ -109,6 +110,14 @@ class StudipMobileController extends Trails_Controller
         $args = array_map('urlencode', $args);
         $args[0] = $to;
 
-        return PluginEngine::getURL($this->dispatcher->plugin, $params, join('/', $args));
+        return \PluginEngine::getURL($this->dispatcher->plugin, $params, join('/', $args));
     }
+
+  function get_default_template($action)
+  {
+      $class = array_pop(explode('\\', get_class($this)));
+      $controller_name =
+          \Trails_Inflector::underscore(substr($class, 0, -10));
+      return $controller_name.'/'.$action;
+  }
 }

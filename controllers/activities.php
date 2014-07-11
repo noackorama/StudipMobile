@@ -1,9 +1,8 @@
 <?php
+namespace Studip\Mobile;
 
 require "StudipMobileAuthenticatedController.php";
 require dirname(__FILE__) . "/../models/activity.php";
-
-use Studip\Mobile\Activity;
 
 /**
  *    ActivitiesController to give newest
@@ -12,7 +11,7 @@ use Studip\Mobile\Activity;
  *    @author André Klaßen - aklassen@uos.de
  *    @author Nils Bussmann - nbussman@uos.de
  */
-class ActivitiesController extends StudipMobileAuthenticatedController
+class ActivitiesController extends AuthenticatedController
 {
     function index_action($seminar_filter = null)
     {

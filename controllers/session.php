@@ -1,4 +1,5 @@
 <?php
+namespace Studip\Mobile;
 
 require "StudipMobileController.php";
 
@@ -9,7 +10,7 @@ require "StudipMobileController.php";
  *    @author André Klaßen - aklassen@uos.de
  *    @author Nils Bussmann - nbussman@uos.de
  */
-class SessionController extends StudipMobileController
+class SessionController extends Controller
 {
 
     function before_filter(&$action, &$args)
@@ -28,11 +29,11 @@ class SessionController extends StudipMobileController
     function create_action()
     {
 
-        $username = Request::get("username");
-        $password = Request::get("password");
+        $username = \Request::get("username");
+        $password = \Request::get("password");
 
         if (isset($username) && isset($password)) {
-            $result = StudipAuthAbstract::CheckAuthentication($username, $password);
+            $result = \StudipAuthAbstract::CheckAuthentication($username, $password);
         }
 
         if (!isset($result) || $result['uid'] === false) {
