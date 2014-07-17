@@ -23,6 +23,31 @@ class Helper {
         return ($a["start"] < $b["start"]) ? -1 : 1;
     }
 
+    static function getLastMidnight($time = null)
+    {
+
+        return 86400 * intval(($time ?: time()) / 86400);
+    }
+
+    static function beautifyDate($time)
+    {
+        $today     = self::getLastMidnight($now = time());
+        $yesterday = $today - 86400;
+
+        if ($time > $now) {
+            return _("zukünftig");
+        }
+
+        if ($time >= $today) {
+            return _("heute");
+        }
+
+        if ($time >= $yesterday) {
+            return _("gestern");
+        }
+        return _("am") . " " . date("d.m.Y", $time);
+    }
+
     static function formatDate($date, $with_time = true)
     {
         return self::get_weekday(date("N", $date)) . date(" j. ", $date) . self::get_month(date("m", $date)) . ($with_time ? date(" Y H:i", $date) : '');

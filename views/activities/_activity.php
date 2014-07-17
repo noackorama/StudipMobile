@@ -1,5 +1,15 @@
 <?
-use Studip\Mobile\Helper as Helper;
+use Studip\Mobile\Helper;
+
+$categories = array(
+  'files'   => _("Neue Datei"),
+  'forum'   => _("Neuer Beitrag"),
+  'info'    => _("Neue Info"),
+  'news'    => _("Neue Ankündigung"),
+  'surveys' => _("Neue Evaluation"),
+  'votings' => _("Neue Umfrage"),
+  'wiki'    => _("Neue Wikiseite")
+);
 ?>
 
 <? if (!empty($activity["link"])) { ?>

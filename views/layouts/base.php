@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, initial-scale=1, user-scalable=no">
 
-    <title>Stud.IP Mobile</title>
+    <title><?= $page_title ?: "Stud.IP Mobile" ?></title>
 
     <link rel="apple-touch-icon" href="<?= $plugin_path ?>/public/images/quickdial/ios.png" type="image/gif" />
 

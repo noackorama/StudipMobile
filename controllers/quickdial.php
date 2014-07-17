@@ -3,6 +3,7 @@ namespace Studip\Mobile;
 
 require "StudipMobileAuthenticatedController.php";
 require dirname(__FILE__) . "/../models/quickdail.php";
+require dirname(__FILE__) . "/../models/activity.php";
 
 /**
  *    The Start Screen of studipmobile
@@ -18,8 +19,10 @@ class QuickdialController extends AuthenticatedController
         $this->next_courses = Quickdail::get_next_courses($this->currentUser()->id);
         $this->user_id = $this->currentUser()->id;
 
-
         // get numbers of new mails
         $this->number_unread_mails = Quickdail::get_number_unread_mails($this->currentUser()->id);
+
+        $this->activities_days = 7;
+        $this->activities = Activity::findAllByUser($this->currentUser()->id, null, $this->activities_days);
     }
 }

@@ -2,6 +2,10 @@
   margin: .6em 10% .8em;
 }
 
+div[data-role='header'] .side-menu-link {
+  border: none;
+}
+
 /* Controller: quickdial */
 #quickdial-index .ui-body-c {
 
@@ -72,6 +76,16 @@
 
 #mail-show .empty {
   font-style: italic;
+}
+
+#mail-show .message-attachments {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+#mail-show .message-attachments .ui-collapsible-heading .ui-btn {
+  border-right-width: 0px;
+  border-left-width: 0px;
 }
 
 /* misc */
