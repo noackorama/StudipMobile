@@ -17,14 +17,23 @@ $this->set_layout("layouts/single_page");
       </a>
   </li>
 
+  <? if (sizeof($activities)) : ?>
   <li>
     <a href="#quickdial-activities">
       <?= Assets::img("icons/32/grey/news", array('class' => 'ui-li-icon')) ?>
-      <?= sprintf(
-            ngettext("Aktivitäten der letzten 24h" , "Aktivitäten der letzten %d Tage", $activities_days),
-            $activities_days) ?>
+
+      <? if ($days == 1) { ?>
+        <? $title = sprintf(ngettext(_("1 Aktivität in 24h"), _("%d Aktivitäten in 24h"),  sizeof($activities)), sizeof($activities)) ?>
+      <? } else if (is_finite($days)) { ?>
+        <? $title = sprintf(ngettext(_("1 Aktivität in %d Tagen"), _("%d Aktivitäten in %d Tagen"),  sizeof($activities)), sizeof($activities), $days) ?>
+      <? } else { ?>
+        <? $title = sprintf(ngettext(_("1 Aktivität"), _("%d Aktivitäten"),  sizeof($activities)), sizeof($activities)) ?>
+      <? } ?>
+
+      <?= $title ?>
     </a>
   </li>
+  <? endif ?>
 </ul>
 
 <? if (!empty($next_courses)) : ?>
@@ -33,4 +42,4 @@ $this->set_layout("layouts/single_page");
 </ul>
 <? endif ?>
 
-<? $additional_pages .= $this->render_partial('quickdial/_activities') ?>
+<? $additional_pages .= $this->render_partial('quickdial/_activities', compact('title')) ?>

@@ -30,7 +30,7 @@ class Activity {
 
         $db = \DBManager::get();
         $now = time();
-        $chdate = $now - 24 * 60 * 60 * $days;
+        $chdate = is_finite($days) ? $now - 24 * 60 * 60 * $days : 0;
         $items = array();
         $limit = " LIMIT 100";
 

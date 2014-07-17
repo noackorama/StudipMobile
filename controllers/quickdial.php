@@ -22,7 +22,38 @@ class QuickdialController extends AuthenticatedController
         // get numbers of new mails
         $this->number_unread_mails = Quickdail::get_number_unread_mails($this->currentUser()->id);
 
-        $this->activities_days = 7;
-        $this->activities = Activity::findAllByUser($this->currentUser()->id, null, $this->activities_days);
+        list($this->days, $this->activities) = $this->getSmartActivities();
+
+        $this->nextInterval = $this->getNextInterval($this->days);
+    }
+
+
+    const SMART_ACTIVITIES_THRESHOLD = 3;
+
+    private function getSmartActivities($days = 1)
+    {
+        $activities = Activity::findAllByUser($this->currentUser()->id, null, $days);
+
+        if (is_finite($days) && sizeof($activities) < self::SMART_ACTIVITIES_THRESHOLD) {
+            return $this->getSmartActivities($this->getNextInterval($days));
+        }
+
+        return array($days, $activities);
+    }
+
+
+    private static $intervals = array(1, 7, 30, 365);
+
+    private function getNextInterval($days)
+    {
+        $next = NAN;
+        foreach (self::$intervals as $interval) {
+            if ($interval > $days) {
+                $next = $interval;
+                break;
+            }
+        }
+
+        return $next;
     }
 }
