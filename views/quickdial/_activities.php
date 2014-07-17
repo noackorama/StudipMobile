@@ -10,7 +10,4 @@ $page_title = sprintf(
 <?= $this->render_partial('activities/_activities',
                           array('activities' => $activities)) ?>
 
-<p>
-  TODO
-  <a data-role="button" href="<?= $controller->url_for('activities') ?>">Mehr</a>
-</p>
+<a class=quickdial-more-activities data-role="button" href="<?= $controller->url_for('activities') ?>">Mehr</a>

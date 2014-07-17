@@ -17,6 +17,10 @@ div[data-role='header'] .side-menu-link {
   background: url("../images/quickdial/studip.png") 50% 95% no-repeat,        linear-gradient(#24437c /*{a-body-background-start}*/, #3C639E /*{a-body-background-end}*/);
 }
 
+#quickdial-activities .quickdial-more-activities {
+  margin-top: 2em;
+}
+
 
 /* Controller: courses */
 

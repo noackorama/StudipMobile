@@ -1,7 +1,6 @@
-<div data-role="panel" id="leftpanel" data-display="push" data-theme="a">
-    <!--
-    <h2>Hallo, <?= $controller->currentUser()->vorname ?>!</h2>
-     -->
+<div data-role="panel" id="leftpanel" data-display="reveal" data-theme="a">
+
+    <h3>Menü</h3>
 
     <ul data-role="listview" data-theme="a" class="nav-search" data-inset="false" id="menu_side">
 
@@ -16,13 +15,6 @@
         <a href="<?= $controller->url_for("courses") ?>" class="externallink contentLink" data-ajax="false">
           <img src="<?= $plugin_path ?>/public/images/quickdial/bw/seminar.png"   class="ui-li-icon ui-corner-none" />
           <?=_("Veranstaltungen")?>
-        </a>
-      </li>
-
-      <li data-icon="false">
-        <a href="<?= $controller->url_for("activities") ?>" class="externallink contentLink" data-ajax="false">
-          <img src="<?= $plugin_path ?>/public/images/quickdial/bw/news.png" class="ui-li-icon ui-corner-none">
-          <?=_("Aktivitäten")?>
         </a>
       </li>
 
