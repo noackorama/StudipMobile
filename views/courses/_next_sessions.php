@@ -1,4 +1,4 @@
-<ul data-role="inlinelistview" data-inset="true">
+<ul data-role="listview" data-inset="true">
   <? if (count($next_dates)) : ?>
 
 
@@ -28,16 +28,15 @@
       </li>
     <? } ?>
 
-    <li data-rel="inline">
-      <a href="#inline-dates">Alle Termine</a>
-    </li>
-
-    <li id="inline-dates">
-      <div>
-        <? $sem = Seminar::getInstance($course->id) ?>
-        <?= nl2br(Studip\Mobile\Helper::out($sem->getDatesExport())) ?>
+    <li class=collapsible-listitem>
+      <div data-role="collapsible" data-theme="c"
+      data-content-theme="c" data-inset=false>
+        <h3>Alle Termine</h3>
+        <div>
+          <? $sem = Seminar::getInstance($course->id) ?>
+          <?= nl2br(Studip\Mobile\Helper::out($sem->getDatesExport())) ?>
+        </div>
       </div>
-
     </li>
 
   <? endif ?>
