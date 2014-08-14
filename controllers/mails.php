@@ -114,10 +114,9 @@ class MailsController extends AuthenticatedController
     /**
      * preparation for sending a mail
      */
-    function write_action()
+    function compose_action()
     {
-        return $this->render_json(array($_POST));
-
+        /*
         if ($empf == null) {
 
             // $this->members  = Mail::findAllInvolvedMembers( $this->currentUser()->id );
@@ -146,6 +145,7 @@ class MailsController extends AuthenticatedController
         } else {
             $this->empfData = User::find($empf);
         }
+        */
     }
 
     /**
