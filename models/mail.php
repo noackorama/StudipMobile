@@ -261,8 +261,8 @@ class Mail {
         }
 
         //senden der Nachricht
-        $send = $message->insert_message(mysql_escape_string(utf8_decode($nachricht)), mysql_escape_string($empf_array),
-                                         mysql_escape_string($abs), '', '', '', '',mysql_escape_string( utf8_decode($betreff)), '', 'normal');
+        $send = $message->insert_message(utf8_decode($nachricht), $empf_array,
+                                         $abs, '', '', '', '', utf8_decode($betreff), '', 'normal');
         return $send > 0;
     }
 }

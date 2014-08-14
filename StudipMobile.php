@@ -6,7 +6,7 @@ class StudipMobile extends StudipPlugin implements SystemPlugin
 
     const DROPBOX_ENABLED = false;
 
-    const AUTOMATIC_REDIRECT = true;
+    const AUTOMATIC_REDIRECT = false;
 
     public function __construct() {
         parent::__construct();

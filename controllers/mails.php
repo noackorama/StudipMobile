@@ -82,7 +82,7 @@ class MailsController extends AuthenticatedController
             }
 
         } else {
-            $this->empfData = User::find($empf);
+            $this->empfData = \User::find($empf);
         }
     }
 
