@@ -2,6 +2,9 @@
 namespace Studip\Mobile;
 
 require_once $this->trails_root .'/models/helper.php';
+require_once $this->trails_root .'/lib/delegating_php_template.php';
+require_once $this->trails_root .'/helpers/format.php';
+require_once $this->trails_root .'/helpers/jqm.php';
 
 define("TOOLBAR_THEME",         "a");
 define("TOOLBAR_BUTTONS",       "c");
@@ -16,6 +19,7 @@ define("STANDARD_DIVIDER",      "a");
  */
 class Controller extends \Trails_Controller
 {
+    static $view_helper_classes = array("Studip\Mobile\FormatHelper", "Studip\Mobile\JQMHelper");
 
     /**
      * Applikationsübergreifender before_filter mit Trick:
@@ -79,18 +83,31 @@ class Controller extends \Trails_Controller
     }
 
 
-    function filter_utf8($items)
+    function filter_utf8($data)
     {
-        foreach ($items as &$item) {
-            foreach ($item as &$value) {
-                if (is_string($value)) {
-                    $value = utf8_encode($value);
-                }
+        // array-artiges wird rekursiv durchlaufen
+        if (is_array($data) || $data instanceof \Traversable) {
+            $new_data = array();
+            foreach ($data as $key => $value) {
+                $key = studip_utf8encode((string) $key);
+                $new_data[$key] = self::filter_utf8($value);
             }
+            return $new_data;
         }
-        return $items;
-    }
 
+        // string-artiges wird an die nicht-rekursive Variante übergeben
+        else if (is_string($data) || is_callable(array($data, '__toString'))) {
+            return studip_utf8encode((string) $data);
+        }
+
+        // skalare Werte und `null` wird so durchgeschleift
+        elseif (is_null($data) || is_scalar($data)) {
+            return $data;
+        }
+
+        // alles andere ist ungültig
+        throw new \InvalidArgumentException();
+    }
 
     function url_for($to)
     {
@@ -113,11 +130,32 @@ class Controller extends \Trails_Controller
         return \PluginEngine::getURL($this->dispatcher->plugin, $params, join('/', $args));
     }
 
-  function get_default_template($action)
-  {
-      $class = array_pop(explode('\\', get_class($this)));
-      $controller_name =
-          \Trails_Inflector::underscore(substr($class, 0, -10));
-      return $controller_name.'/'.$action;
-  }
+    # ignore namespace of controllers
+    function get_default_template($action)
+    {
+        $class = array_pop(explode('\\', get_class($this)));
+        $controller_name =
+            \Trails_Inflector::underscore(substr($class, 0, -10));
+        return $controller_name.'/'.$action;
+    }
+
+
+    # use my own template class
+    function get_template_factory()
+    {
+        $factory = parent::get_template_factory();
+        if (isset(static::$view_helper_classes)) {
+            $options = array(
+                'view_helper_classes' => static::$view_helper_classes
+            );
+            $factory->add_handler('php', 'Studip\Mobile\DelegatingPhpTemplate', $options);
+        }
+        return $factory;
+    }
+
+    # send back an error
+    function error($code, $reason = null)
+    {
+        throw new \Trails_Exception($code, $reason);
+    }
 }
