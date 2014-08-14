@@ -38,7 +38,7 @@ gulp.task('default', ['less']);
 gulp.task('less', function() {
     // place code for your default task here
     return gulp.src(paths.styles)
-        .pipe(less()).pipe(gulp.dest('css'))
+        .pipe(less())
         .pipe(minify())
         .pipe(concat('studipmobile.min.css'))
         .pipe(gulp.dest('./public/stylesheets'));
