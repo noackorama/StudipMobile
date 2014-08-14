@@ -6,7 +6,7 @@ $this->set_layout("layouts/single_page");
 
 <ul data-role="listview" data-inset="true">
   <li>
-      <a href="<?= $controller->url_for("mails") ?>">
+      <a href="<?= $controller->url_for("mails/inbox") ?>">
         <?= Assets::img("icons/32/grey/mail", array('class' => 'ui-li-icon')) ?>
 
         <? if ($number_unread_mails > 0) { ?>
@@ -23,11 +23,11 @@ $this->set_layout("layouts/single_page");
       <?= Assets::img("icons/32/grey/news", array('class' => 'ui-li-icon')) ?>
 
       <? if ($days == 1) { ?>
-        <? $title = sprintf(ngettext(_("1 Aktivität in 24h"), _("%d Aktivitäten in 24h"),  sizeof($activities)), sizeof($activities)) ?>
+        <? $title = sprintf(ngettext("1 Aktivität in 24h", "%d Aktivitäten in 24h",  sizeof($activities)), sizeof($activities)) ?>
       <? } else if (is_finite($days)) { ?>
-        <? $title = sprintf(ngettext(_("1 Aktivität in %d Tagen"), _("%d Aktivitäten in %d Tagen"),  sizeof($activities)), sizeof($activities), $days) ?>
+        <? $title = sprintf(ngettext("1 Aktivität in %d Tagen", "%d Aktivitäten in %d Tagen",  sizeof($activities)), sizeof($activities), $days) ?>
       <? } else { ?>
-        <? $title = sprintf(ngettext(_("1 Aktivität"), _("%d Aktivitäten"),  sizeof($activities)), sizeof($activities)) ?>
+        <? $title = sprintf(ngettext("1 Aktivität", "%d Aktivitäten",  sizeof($activities)), sizeof($activities)) ?>
       <? } ?>
 
       <?= $title ?>
@@ -42,4 +42,4 @@ $this->set_layout("layouts/single_page");
 </ul>
 <? endif ?>
 
-<? $additional_pages .= $this->render_partial('quickdial/_activities', compact('title')) ?>
+<? $this->addPage('quickdial/_activities', compact('title')) ?>

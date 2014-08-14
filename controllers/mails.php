@@ -12,50 +12,112 @@ require dirname(__FILE__) . "/../models/mail.php";
  */
 class MailsController extends AuthenticatedController
 {
+
+    function before_filter(&$action, &$args)
+    {
+        parent::before_filter($action, $args);
+
+        if (sizeof($args) === 1 && ($action === 'inbox' || $action === 'outbox')) {
+            $this->is_outbox = $action === 'outbox';
+            $action = 'show';
+        }
+    }
+
     /**
      * lists mails of inbox
      */
-    function index_action($intervall = 0, $delId = null)
+    function inbox_action()
     {
-        //  set intervall for the messages
-        $this->intervall = $intervall;
-        //  if a message should be deleted
-        if ($delId != null) {
-            Mail::deleteMessage( $delId, $this->currentUser()->id);
-        }
         //  get all messages
-        $this->inbox = Mail::findAllByUser($this->currentUser()->id, $intervall, true);
+        $ids = Mail::inbox($this->currentUser());
+        $this->messages = Mail::load($this->currentUser(), $ids);
     }
 
     /**
      * lists mails of outbox
      */
-    function list_outbox_action($intervall = 0, $delId = null )
+    function outbox_action()
     {
-        //  set intervall for the messages
-        $this->intervall = $intervall;
-
-        //  if a message should be deleted
-        if ($delId != null) {
-            Mail::deleteMessage($delId, $this->currentUser()->id);
-        }
         //  get all messages
-        $this->outbox = Mail::findAllByUser($this->currentUser()->id, $intervall, false);
+        $ids = Mail::outbox($this->currentUser());
+        $this->messages = Mail::load($this->currentUser(), $ids);
     }
 
     /**
-     * show a specific message
+     * show a specific received message
      */
-    function show_msg_action($id, $mark = 0)
+    function show_action($id)
     {
-        $this->mail = Mail::findMsgById($this->currentUser()->id, $id, $mark);
+        $this->mail = Mail::load($this->currentUser(), $id);
+        if (!$this->mail) {
+            $this->error(404);
+        }
+
+        Mail::markMail($this->currentUser(), $this->mail, true);
+    }
+
+    function reply_action($id)
+    {
+        $mail = Mail::load($this->currentUser(), $id);
+        if (!$mail) {
+            $this->error(404);
+        }
+
+        $body = \Request::get("reply");
+        $reply = Mail::replyTo($this->currentUser(), $mail, $body);
+
+        if ($reply) {
+            $this->render_json(array('status' => 'ok'));
+        } else {
+            // TODO: figure out real status code
+            $this->error(500);
+        }
+    }
+
+    function status_action($id)
+    {
+        $mail = Mail::load($this->currentUser(), $id);
+        if (!$mail) {
+            $this->error(404);
+        }
+
+        $read = \Request::int('read');
+        if ($read === null) {
+            $this->error(400);
+        }
+
+        Mail::markMail($this->currentUser(), $mail, $read);
+
+        $this->render_json(array('status' => 'ok'));
+    }
+
+
+    function delete_action($msg_id)
+    {
+        if (\Request::method() !== 'DELETE' || !\Request::isXhr()) {
+            $this->error(400);
+        }
+
+        $mail = Mail::load($this->currentUser(), $id);
+        if (!$mail) {
+            $this->error(404);
+        }
+
+        $status = Mail::delete($this->currentUser(), $mail);
+        if ($status) {
+            $this->render_json(array('status' => 'ok'));
+        } else {
+            $this->error(500, 'Could not delete mail.');
+        }
     }
 
     /**
      * preparation for sending a mail
      */
-    function write_action($empf = null)
+    function write_action()
     {
+        return $this->render_json(array($_POST));
+
         if ($empf == null) {
 
             // $this->members  = Mail::findAllInvolvedMembers( $this->currentUser()->id );

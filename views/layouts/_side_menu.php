@@ -26,7 +26,7 @@
       </li>
 
       <li data-icon="false">
-        <a href="<?= $controller->url_for("mails") ?>" class="externallink contentLink" data-ajax="false">
+        <a href="<?= $controller->url_for("mails/inbox") ?>" class="externallink contentLink" data-ajax="false">
           <img src="<?= $plugin_path ?>/public/images/quickdial/bw/mail.png"   class="ui-li-icon ui-corner-none" />
           <?=_("Nachrichten")?>
         </a>

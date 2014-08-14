@@ -6,199 +6,131 @@ require_once $this->trails_root .'/models/course.php';
 
 class Mail {
 
-    /**
-     *  Get latest 30 Messages from a user starting
-     *  width intervall.
-     *  @param $user_id         owner of the message
-     *  @param $intervall       where to start
-     *  @param $inpox           list from inbox or outbox
-     */
-    static function findAllByUser($user_id, $intervall, $inbox = true)
+    static function inbox($user)
     {
-        return self::get_mails($user_id, $intervall, $inbox);
+        return self::box($user, 'inbox');
     }
 
-    static function findMsgById($user_id, $msg_id, $mark = 0)
+    static function outbox($user)
     {
-        return self::get_mail($user_id, $msg_id, $mark);
+        return self::box($user, 'outbox');
     }
 
-    static function deleteMessage($id, $user_id)
+    static function box($user, $box)
+    {
+        $sndrec = $box === 'inbox' ? 'rec' : 'snd';
+
+        $query = "SELECT message_id
+                  FROM message_user
+                  WHERE snd_rec = ? AND user_id = ? AND deleted = 0
+                  ORDER BY mkdate DESC";
+        $statement = \DBManager::get()->prepare($query);
+        $statement->execute(array(
+            $sndrec,
+            $user->id,
+        ));
+        return $statement->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+
+    static function load($user, $ids, $additional_fields = array()) {
+
+        if (empty($ids)) {
+            return array();
+        }
+
+        $additional_fields = empty($additional_fields)
+                           ? ''
+                           : ',' . implode(',', $additional_fields);
+
+        $query = "SELECT m.message_id, mu.user_id AS sender_id, subject,
+                         message, m.mkdate, priority, mu.deleted, 1 - mu.readed as sender_unread,
+                         GROUP_CONCAT(DISTINCT CONCAT(mu2.user_id, '-', mu2.readed, '-', mu2.deleted)) AS receivers
+                         {$additional_fields}
+                  FROM message AS m
+                  INNER JOIN message_user AS mu ON (m.message_id = mu.message_id AND mu.snd_rec = 'snd')
+                  INNER JOIN message_user AS mu2 ON (mu.message_id = mu2.message_id AND mu2.snd_rec = 'rec')
+                  WHERE m.message_id IN (:ids) AND :user_id IN (mu.user_id, mu2.user_id)
+                  GROUP BY m.message_id";
+        if (is_array($ids) and count($ids) > 1) {
+            $query .= " ORDER BY m.mkdate DESC";
+        }
+
+        $statement = \DBManager::get()->prepare($query);
+        $statement->execute(array(
+            ':ids'     => $ids,
+            ':user_id' => $user->id
+        ));
+        $messages = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        array_walk($messages, function (&$message) use ($user) {
+            $message['receivers'] = array_reduce(
+                explode(',', $message['receivers']),
+                function ($memo, $line) {
+                    list($id, $readed, $deleted) = explode('-', $line);
+                    $memo[$id] = array('unread' => 1 - $readed, 'deleted' => $deleted);
+                    return $memo;
+                },
+                array());
+            $message['attachments']   = Mail::loadAttachments($message['message_id']);
+
+            if (isset($message['receivers'][$user->id])) {
+                $message['unread'] = $message['receivers'][$user->id]['unread'];
+            } else {
+                $message['unread'] = $message['sender_unread'];
+            }
+        });
+
+        return is_array($ids) ? $messages : reset($messages);
+    }
+
+    static function loadAttachments($id)
+    {
+        $query = "SELECT dokument_id, name, filesize
+                  FROM dokumente
+                  WHERE range_id = :msg_id AND user_id = seminar_id
+                  ORDER BY filename ASC";
+        $statement =  \DBManager::get()->prepare($query);
+        $statement->bindValue(':msg_id', $id);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
+    static function delete($user, $mail)
     {
         $stmt = \DBManager::get()->prepare("UPDATE `message_user`
             SET deleted = '1'
             WHERE message_user.user_id = ?
             AND message_user.message_id = ?");
-        $stmt->execute(array($user_id, $id));
+        $stmt->execute(array($user->id, $mail['message_id']));
+
+        return $stmt->rowCount();
     }
 
-    static function get_mail($user_id, $msg_id, $mark = 0)
+    static function markMail($user, &$mail, $mark_as_read)
     {
-        if ($msg_id == null) {
-            return null;
-        }
-
-        // Nachricht auslesen
-        $result = array();
         $db = \DBManager::get();
 
-        $stmt = $db->prepare(
-           "SELECT
 
-              auth_user_md5.user_id,
-              auth_user_md5.Vorname AS vorname,
-              auth_user_md5.Nachname AS nachname,
-
-              message.message_id AS message_id,
-              message.message  AS message,
-              message.subject  AS subject,
-              message.autor_id AS autor_id,
-              message.mkdate   AS mkdate,
-
-              message_user.message_id,
-              message_user.user_id AS receiver,
-
-              GROUP_CONCAT(DISTINCT CONCAT(dokument_id, ':', filename)) AS attachments,
-              COUNT(DISTINCT dokument_id) AS num_attachments
-
-            FROM message
-            LEFT JOIN auth_user_md5 ON message.autor_id = auth_user_md5.user_id
-            LEFT JOIN message_user USING (message_id)
-            LEFT JOIN dokumente ON range_id=message_user.message_id
-
-            WHERE message.message_id     =  ?
-                AND message_user.user_id =  ?
-                AND message_user.deleted =  '0'
-            GROUP BY message.message_id
-            LIMIT 0,1");
-
-        $stmt->execute(array($msg_id, $user_id));
-
-        $row = $stmt->fetch();
-
-        $attachments = array();
-        foreach (explode(',', $row['attachments']) as $attachment) {
-            if (!strlen($attachment)) {
-                continue;
-            }
-            list($dokument_id, $filename) = explode(":", $attachment);
-            $attachments[$dokument_id] = $filename;
-        }
-
-        $result = array(
-            'id'              => $row['message_id'],
-            'title'           => $row['subject'],
-            'author'          => $row['vorname'] . ' ' . $row['nachname'],
-            'author_id'       => $row['autor_id'],
-            'message'         => $row['message'],
-            'mkdate'          => $row['mkdate'],
-            'receiver'        => get_fullname($row['receiver']),
-            'num_attachments' => $row['num_attachments'],
-            'attachments'     => $attachments
-        );
-
-        if ($mark == 1) {
-            $stmt = $db->prepare("UPDATE `message_user`
-                SET readed = '0'
-                WHERE   message_user.user_id    = ?
-                    AND message_user.message_id = ?");
-        } else {
+        if ($mark_as_read && $mail['unread']) {
             $stmt = $db->prepare("UPDATE `message_user`
                 SET readed = '1'
                 WHERE   message_user.user_id    = ?
                     AND message_user.message_id = ?");
+
+            $stmt->execute(array($user->id, $mail['message_id']));
+
+        } elseif (!$mark_as_read && !$mail['unread']) {
+            $stmt = $db->prepare("UPDATE `message_user`
+                SET readed = '0'
+                WHERE   message_user.user_id    = ?
+                    AND message_user.message_id = ?");
+
+            $stmt->execute(array($user->id, $mail['message_id']));
         }
 
-        $stmt->execute(array($user_id, $msg_id));
-
-        return $result;
-    }
-
-    static function get_mails($user_id, $intervall, $inbox = true)
-    {
-        $items = array();
-        $db = \DBManager::get();
-
-        if ($inbox == true) {
-
-            $query = "
-                  SELECT
-                    message.*,
-                    message_user.readed,
-                    auth_user_md5.Vorname,
-                    auth_user_md5.Nachname,
-                    auth_user_md5.username,
-                    COUNT(dokument_id) AS num_attachments
-                  FROM message_user
-                  LEFT JOIN message USING (message_id)
-                  LEFT JOIN auth_user_md5 ON (autor_id=auth_user_md5.user_id)
-                  LEFT JOIN dokumente ON range_id=message_user.message_id
-                  WHERE message_user.user_id = :user_id AND message_user.snd_rec = 'rec'
-                    AND message_user.deleted = 0
-                  GROUP BY message_user.message_id
-                  ORDER BY message_user.mkdate DESC";
-
-            $stmt = $db->prepare($query);
-            $stmt->execute(array(':user_id' => $user_id));
-
-            while ($row = $stmt->fetch()) {
-                $items[] = array(
-                    'id'              => $row['message_id'],
-                    'title'           => $row['subject'],
-                    'author'          => $row['Vorname'] . ' ' . $row['Nachname'],
-                    'author_id'       => $row['autor_id'],
-                    'message'         => $row['message'],
-                    'mkdate'          => $row['mkdate'],
-                    'readed'          => $row['readed'],
-                    'num_attachments' => $row['num_attachments']
-                );
-            }
-
-        } else {
-            $query = "
-                  SELECT message.*,
-                         auth_user_md5.user_id AS rec_uid, auth_user_md5.vorname AS rec_vorname,
-                         auth_user_md5.nachname AS rec_nachname, auth_user_md5.username AS rec_uname,
-                         COUNT(DISTINCT mu.user_id) AS num_rec, COUNT(dokument_id) AS num_attachments
-                  FROM message_user
-                  LEFT JOIN message_user AS mu ON (message_user.message_id = mu.message_id AND mu.snd_rec = 'rec')
-                  LEFT JOIN message ON (message.message_id = message_user.message_id)
-                  LEFT JOIN auth_user_md5 ON (mu.user_id = auth_user_md5.user_id)
-                  LEFT JOIN dokumente ON (range_id = message_user.message_id)
-                  WHERE message_user.user_id = :user_id
-                    AND message_user.snd_rec = 'snd' AND message_user.deleted = 0
-                  GROUP BY message_user.message_id
-                  ORDER BY message_user.mkdate DESC";
-/*
-            $count -= 1;
-            $psm['count']           = $count;
-            $psm['count_2']         = $tmp_move_to_folder - ($n+1);
-            $psm['rec_uid']         = $row['rec_uid'];
-            $psm['rec_vorname']     = $row['rec_vorname'];
-            $psm['rec_nachname']    = $row['rec_nachname'];
-            $psm['rec_uname']       = $row['rec_uname'];
-            $psm['num_rec']         = $row['num_rec'];
-
-*/
-            $stmt = $db->prepare($query);
-            $stmt->execute(array(':user_id' => $user_id));
-
-            while ($row = $stmt->fetch()) {
-                $items[] = array(
-                    'id'              => $row['message_id'],
-                    'title'           => $row['subject'],
-                    'message'         => $row['message'],
-                    'mkdate'          => $row['mkdate'],
-                    'num_rec'         => $row['num_rec'],
-                    'rec_vorname'     => $row['rec_vorname'],
-                    'rec_nachname'    => $row['rec_nachname'],
-                    'num_attachments' => $row['num_attachments']
-                );
-            }
-        }
-
-
-        return $items;
+        $mail['unread'] = !$mark_as_read;
     }
 
     static function findAllInvolvedMembers($userId)
@@ -264,5 +196,11 @@ class Mail {
         $send = $message->insert_message(mysql_escape_string(utf8_decode($nachricht)), mysql_escape_string($empf_array),
                                          mysql_escape_string($abs), '', '', '', '',mysql_escape_string( utf8_decode($betreff)), '', 'normal');
         return $send > 0;
+    }
+
+    static function replyTo($user, $mail, $body)
+    {
+        $re = substr($mail['subject'], 0, 4) === 'Re: ' ? $mail['subject'] : ('Re: ' . $mail['subject']);
+        return self::send(get_username($mail['sender_id']), $re, $body, $user->id);
     }
 }
