@@ -1,4 +1,5 @@
 <?php
+namespace Studip\Mobile;
 
 require "StudipMobileController.php";
 
@@ -9,7 +10,7 @@ require "StudipMobileController.php";
  *    @author André Klaßen - aklassen@uos.de
  *    @author Nils Bussmann - nbussman@uos.de
  */
-class SessionController extends StudipMobileController
+class SessionController extends Controller
 {
 
     function before_filter(&$action, &$args)
@@ -28,16 +29,17 @@ class SessionController extends StudipMobileController
     function create_action()
     {
 
-        $username = Request::get("username");
-        $password = Request::get("password");
+        $username = \Request::get("username");
+        $password = \Request::get("password");
 
         if (isset($username) && isset($password)) {
-            $result = StudipAuthAbstract::CheckAuthentication($username, $password);
+            $result = \StudipAuthAbstract::CheckAuthentication($username, $password);
         }
 
         if (!isset($result) || $result['uid'] === false) {
             $this->flash["notice"] = "login unsuccessful!";
             \NotificationCenter::postNotification('mobile.SessionDidNotCreate', $this);
+            $this->flash["failed_login"] = true;
             $this->redirect("session/new");
             return;
         }
@@ -69,49 +71,19 @@ class SessionController extends StudipMobileController
 
     protected function start_session($user_id)
     {
+        $user = \User::find($user_id);
 
-        // TODO: für Stud.IP v2.3
-        if (is_callable(array('Seminar_User', 'start'))) {
-            global $perm, $user, $auth, $sess, $forced_language, $_language;
+        $GLOBALS['auth'] = new \Seminar_Auth();
+        $GLOBALS['auth']->auth = array(
+            'uid'   => $user->user_id,
+            'uname' => $user->username,
+            'perm'  => $user->perms,
+            "auth_plugin" => $user->auth_plugin,
+        );
 
+        $GLOBALS['user'] = new \Seminar_User($user);
 
-            $user = new Seminar_User();
-            $user->start($user_id);
-
-            foreach (array(
-                         "uid" => $user_id,
-                         "perm" => $user->perms,
-                         "uname" => $user->username,
-                         "auth_plugin" => $user->auth_plugin,
-                         "exp" => time() + 60 * 15,
-                         "refresh" => time()
-                     ) as $k => $v) {
-                $auth->auth[$k] = $v;
-            }
-
-            $auth->nobody = false;
-
-            $sess->regenerate_session_id(array('auth', 'forced_language','_language'));
-            $sess->freeze();
-        }
-
-        // TODO: für Stud.IP v2.5
-        else {
-
-            $user = User::find($user_id);
-
-            $GLOBALS['auth'] = new Seminar_Auth();
-            $GLOBALS['auth']->auth = array(
-                'uid'   => $user->user_id,
-                'uname' => $user->username,
-                'perm'  => $user->perms,
-                "auth_plugin" => $user->auth_plugin,
-            );
-
-            $GLOBALS['user'] = new Seminar_User($user);
-
-            $GLOBALS['perm'] = new Seminar_Perm();
-            $GLOBALS['MAIL_VALIDATE_BOX'] = false;
-        }
+        $GLOBALS['perm'] = new \Seminar_Perm();
+        $GLOBALS['MAIL_VALIDATE_BOX'] = false;
     }
 }

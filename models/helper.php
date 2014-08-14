@@ -23,6 +23,10 @@ class Helper {
         return ($a["start"] < $b["start"]) ? -1 : 1;
     }
 
+    static function formatDate($date, $with_time = true)
+    {
+        return self::get_weekday(date("N", $date)) . date(" j. ", $date) . self::get_month(date("m", $date)) . ($with_time ? date(" Y H:i", $date) : '');
+    }
 
     static function stamp_to_dat($timestamp)
     {
@@ -105,7 +109,7 @@ class Helper {
     {
         return mb_convert_encoding(htmlReady($text), 'UTF-8', 'WINDOWS-1252');
     }
-    
+
     public static function fout($text)
     {
         return mb_convert_encoding(formatReady($text), 'UTF-8', 'WINDOWS-1252');
@@ -272,5 +276,10 @@ class Helper {
         }
 
         return substr($check, strlen($check)-strlen($endStr), strlen($endStr)) === $endStr;
+    }
+
+    static function isExternalLink($link)
+    {
+        return preg_match('#^(/|\w+://)#', $link);
     }
 }

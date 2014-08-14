@@ -1,9 +1,8 @@
 <?php
+namespace Studip\Mobile;
 
 require "StudipMobileAuthenticatedController.php";
 require dirname(__FILE__) . "/../models/activity.php";
-
-use Studip\Mobile\Activity;
 
 /**
  *    ActivitiesController to give newest
@@ -12,10 +11,10 @@ use Studip\Mobile\Activity;
  *    @author André Klaßen - aklassen@uos.de
  *    @author Nils Bussmann - nbussman@uos.de
  */
-class ActivitiesController extends StudipMobileAuthenticatedController
+class ActivitiesController extends AuthenticatedController
 {
-    function index_action($seminar_cur = 0)
+    function index_action($cid_filter = null)
     {
-        $this->activities = Activity::findAllByUser($this->currentUser()->id, $seminar_cur);
+        $this->activities = Activity::findAllByUser($this->currentUser()->id, $cid_filter, \Request::int('days', 30));
     }
 }
