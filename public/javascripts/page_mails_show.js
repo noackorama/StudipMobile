@@ -1,5 +1,7 @@
 var MailView = require('./mail_view'),
     bootstrap = require('./bootstraps');
 
-var mail = bootstrap('model', {});
-var page  = new MailView($("#mail-show"), { model: mail });
+$(document).on("pagebeforeshow", function () {
+    var mail = bootstrap('mail', {});
+    var page  = new MailView($("#mail-show"), { model: mail });
+});

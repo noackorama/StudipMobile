@@ -35,13 +35,8 @@ $system_mail = $mail['sender_id'] === '____%system%____';
 <? if (!$system_mail && !$is_outbox) echo $this->render_partial('mails/_message_fast_reply') ?>
 
 
-
 <script>
- $(document).on("pagebeforeshow", function () {
-   /*
-   var MailView = require();
-   var mail = <?= json_encode($controller->filter_utf8($mail)) ?>,
-   view  = new STUDIP.Mobile.MailView($("#mail-show"), {model: mail});
-   */
- });
+STUDIP.Mobile.bootstraps.mail = <?= json_encode($controller->filter_utf8($mail)) ?>;
 </script>
+
+<script src="<?= $plugin_path?>/public/javascripts/bundle/page_mails_show.js"></script>
