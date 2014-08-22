@@ -20,6 +20,9 @@ $desktop_url = URLHelper::getLink($GLOBALS['ABSOLUTE_URI_STUDIP'], array(StudipM
     <? endif;?>
 
     <form action="<?= $controller->url_for('session/create') ?>" method="post" data-ajax="false">
+      <input type=hidden name=again value=yes>
+      <input type=hidden name=cancel_login value=1>
+
       <div data-role="fieldcontain">
         <label for="username">Nutzername:</label>
         <input type="text" name="username" id="username" value="">
