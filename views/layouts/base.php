@@ -13,6 +13,7 @@
     <link rel="stylesheet"  href="<?= $plugin_path ?>/public/vendor/jquery.mobile.themes/studip.css" />
     <link rel="stylesheet"  href="<?= $plugin_path ?>/public/stylesheets/studipmobile.min.css" />
 
+    <script src="<?= $plugin_path ?>/public/vendor/underscore/underscore-min.js"></script>
     <script src="<?= $plugin_path ?>/public/vendor/jquery/jquery-1.9.1.min.js"></script>
     <script src="<?= $plugin_path ?>/public/vendor/jquery.mobile.1.3.2/jquery.mobile-1.3.2.min.js"></script>
 
