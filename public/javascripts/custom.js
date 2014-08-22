@@ -1,3 +1,11 @@
+jQuery(document).on('pagehide', 'div', function (event, ui) {
+    var page = jQuery(event.target);
+
+    if (page.attr('data-cache') === 'never'){
+        page.remove();
+    }
+});
+
 // global counter of the
 var DROPBOX_COUNTER = 0;
 // global indicator for upload or login errors
