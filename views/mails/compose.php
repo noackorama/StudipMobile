@@ -1,52 +1,63 @@
 <?
 $this->setPageOptions('Nachricht schreiben', 'mail-compose');
-$this->addPage('mails/_message_reply');
+echo $this->render_partial('mails/_add_contact');
 
-$this->addFooter('mails/_index_footer', compact('compose'));
+$this->addFooter('mails/_index_footer', array('selected' => 'compose'));
 ?>
 
-<? if (!empty( $empfData )) { ?>
-  <p>
-    <form action="<?= $controller->url_for("mails/send", $empfData['username']) ?>" method="POST" data-ajax="false">
-      <div class="ui-grid-b a_bit_smaller_text" data-theme="c" style="font-size:10pt;">
-        <div class="ui-block-a">
-          <img  src="
-	  <?= $controller->url_for("avatars/show", $empfData["user_id"], 'medium') ?>"
-	        alt="Profil-Bild">
-        </div>
-        <div class="ui-block-b">
-	  <h3>Empfänger: </h3><?=Studip\Mobile\Helper::out($empfData['vorname']. " " . $empfData['nachname']) ?>
-        </div>
-      </div><!-- /grid-a -->
-      <hr>
-      <h3>Betreff</h3>
-      <input name="mail_title">
-      <h3>Nachricht</h3>
-      <textarea style="min-height:200px;" name="mail_message"></textarea>
-      <button value="submit">Senden</button>
-  </p>
+<script>
+STUDIP.Mobile.bootstraps.mail     = <?= $mail     ? json_encode($mail) : 'null' ?>;
+STUDIP.Mobile.bootstraps.contacts = <?= $contacts ? json_encode($contacts) : 'null' ?>;
+</script>
 
-<? } else { ?>
+<script src="<?= $plugin_path?>/public/javascripts/bundle/page_mails_compose.js"></script>
 
-  <ul id="courses" data-role="listview" data-filter="true" data-filter-placeholder="Suchen" data-divider-theme="d" >
-    <li data-role="divider" data-theme="d">Bitte wählen Sie einen Empfänger:</li>
-    <? if($members) { ?>
-      <? foreach ($members AS $member) { ?>
-    	<li>
-    	  <a href="<?= $controller->url_for("mails/write", $member['user_id']) ?>">
-    	    <?= Avatar::getAvatar($member['user_id'])->getImageTag(Avatar::MEDIUM, array('class' => 'ui-li-thumb')) ?>
-    	    <h3><?=Studip\Mobile\Helper::out($member["title_front"]) ?>
-    	      <?=Studip\Mobile\Helper::out($member['Vorname']) ?>
-    	      <?=Studip\Mobile\Helper::out($member['Nachname'])?>
-    	    </h3>
-    	  </a>
-    	</li>
-      <? } ?>
-    <? } else { ?>
-      <li>
-    	<h3>Sie haben noch keine Kontake!</h3>
-        <p>Bitte fügen Sie NutzerInnen zu Ihrer Kontaktliste hinzu, um diese als Empfänger auswählen zu können.</p>
-      </li>
-    <? } ?>
-  </ul>
-<? } ?>
+<form action="<?= $controller->url_for("mails/send") ?>" method="POST">
+
+<ul id="composer" data-role="listview" data-theme=d>
+
+  <li class=recipients>
+    <div data-role="fieldcontain">
+      <label for=rec-search>
+        Empfänger: <span class=required>*</span>
+      </label>
+
+      <? if (sizeof($contacts)) : ?>
+      <div id=show-contacts>
+        <a href="#mail-show-contacts" data-role=button
+           data-rel=popup
+           data-transition=slideup
+           data-shadow="false"
+           data-icon=plus data-mini=true data-iconpos=notext>Ihre Kontakte</a>
+      </div>
+      <? endif ?>
+
+      <ul class=selected data-role=listview data-inset=false data-icon=minus></ul>
+
+      <input id=rec-search type=search data-clear-btn=true
+             data-corners=false placeholder="Suchen">
+    </div>
+  </li>
+
+  <li class=subject>
+    <div data-role="fieldcontain">
+      <label for=rec-subject> Betreff: <span class=required>*</span> </label>
+      <input id=rec-subject name=subject type=text required
+             value="<?= isset($mail['subject']) ? $this->out($mail['subject']) : '' ?>">
+    </div>
+  </li>
+
+
+  <li class=message>
+    <div data-role="fieldcontain">
+      <label for=rec-message> Nachricht: </label>
+      <textarea id=rec-message name=message></textarea>
+    </div>
+  </li>
+
+  <li>
+    <button id=send>Abschicken</button>
+  </li>
+</ul>
+
+</form>
