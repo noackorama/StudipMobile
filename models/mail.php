@@ -192,9 +192,19 @@ class Mail {
         return $send > 0;
     }
 
+    static function getReplySubject($mail)
+    {
+        return substr($mail['subject'], 0, 4) === 'Re: ' ? $mail['subject'] : ('Re: ' . $mail['subject']);
+    }
+
+    static function getQuotedMessage($mail)
+    {
+        return $mail['message'];
+    }
+
     static function replyTo($user, $mail, $body)
     {
-        $re = substr($mail['subject'], 0, 4) === 'Re: ' ? $mail['subject'] : ('Re: ' . $mail['subject']);
+        $re = self::getReplySubject($mail);
         return self::send(get_username($mail['sender_id']), $re, $body, $user->id);
     }
 }
