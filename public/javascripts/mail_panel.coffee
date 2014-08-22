@@ -1,21 +1,19 @@
 helpers = require './helpers.coffee'
 
-MailPanel = (el, model) ->
+MailPanel = (@$el, @mail) ->
   self = this
-  @el = el
-  @model = model
 
-  $(el).on 'click', '.actions button', (event) ->
+  @$el.on 'click', '.actions button', (event) ->
     action = $(this).data('action')
     if typeof self[action] == 'function'
       self[action](event, $(this))
 
-MailPanel.prototype.markasunread = (event, $button) ->
+MailPanel::markasunread = (event, $button) ->
 
   $button.button('disable')
   $.mobile.loading('show')
 
-  $.post helpers.url_for('mails/status/' + @model.message_id), read: 0
+  $.post helpers.url_for('mails/status/' + @mail.message_id), read: 0
    .then ->
        $.mobile.loading 'hide'
        $.mobile.activePage.attr 'data-message-read', 0
@@ -24,11 +22,11 @@ MailPanel.prototype.markasunread = (event, $button) ->
        $.mobile.loading('hide')
        helpers.openPopup('TODO: Fehler')
 
-MailPanel.prototype.markasread = (event, $button) ->
+MailPanel::markasread = (event, $button) ->
   $button.button 'disable'
   $.mobile.loading 'show'
 
-  $.post helpers.url_for('mails/status/' + @model.message_id), read: 1
+  $.post helpers.url_for('mails/status/' + @mail.message_id), read: 1
    .then ->
       $.mobile.loading 'hide'
       $.mobile.activePage.attr 'data-message-read', 1
@@ -37,25 +35,32 @@ MailPanel.prototype.markasread = (event, $button) ->
       $.mobile.loading 'hide'
       helpers.openPopup 'TODO: Fehler'
 
-MailPanel.prototype.delete = (event) ->
-
+confirmDeletion = (cb) ->
+  success = false
   $confirmPopup = $ '#popup-message-delete'
 
   $confirmPopup
-    .on 'popupafteropen.confirmPopup', (event, ui) ->
-      console.log 'popup open'
+    .on 'click.confirmPopup', '.confirm', ->
+      success = true
+      $confirmPopup.popup('close')
+    .on 'popupafterclose.confirmPopup', ->
+      $confirmPopup.off('.confirmPopup')
+      cb success
+    .popup 'open'
 
-      $confirmPopup.on 'click.confirmPopup', '.confirm', ->
-        console.log 'confirmed'
-        $confirmPopup.popup 'close'
-        false
-      .on 'popupafterclose.confirmPopup', ->
-        console.log 'popup close'
-        $confirmPopup.off '.confirmPopup'
+MailPanel::delete = (event) ->
+  confirmDeletion (status) =>
+    @$el.panel 'close'
+    if status
+      $.mobile.loading 'show', text: 'Löschen', textVisible: true
+      @mail.delete()
+        .fin -> $.mobile.loading 'hide'
 
-    $confirmPopup.popup 'open'
+        .done ->
+          do $.mobile.back
 
-MailPanel.prototype.reply = (event) ->
-    console.log 'reply', arguments
+        , (error) ->
+          console.log 'error', error
+          helpers.openPopup 'TODO: Fehler'
 
 module.exports = MailPanel

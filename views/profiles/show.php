@@ -26,7 +26,7 @@ $visibilities = get_local_visibility_by_id($user_id, 'homepage');
       <? } ?>
 
       <li>
-        <a href="<?= $controller->url_for("mails/compose", htmlReady($user_id)) ?>">
+        <a href="<?= $controller->url_for("mails/compose") ?>?to=<?= htmlReady($user_id) ?>">
           Nachricht senden
         </a>
       </li>

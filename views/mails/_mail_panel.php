@@ -16,10 +16,12 @@
       </div>
 
       <? if ($mail['author_id'] == '____%system%____') : ?>
-        <button disabled data-action=reply>Antworten</button>
+        <button disabled>Antworten</button>
       <? else : ?>
-        <button data-action=reply>Antworten</button>
-        <!-- <a id="antworten" href="<?= $controller->url_for("mails/compose", $mail['author_id']) ?>" data-theme="c" data-icon="check" data-transition="slideup">Antworten</a> -->
+        <a data-role=button
+           href="<?= $controller->url_for("mails/compose") ?>?in_reply_to=<?= $mail['message_id'] ?>">
+          Antworten
+        </a>
       <? endif ?>
 
     <? endif?>

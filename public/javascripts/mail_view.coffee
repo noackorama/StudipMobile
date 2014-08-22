@@ -4,10 +4,10 @@ helpers   = require './helpers.coffee'
 MailView = (el, options) ->
   self = @
   @el = el
-  @model = options.model
+  @mail = options.mail
 
 
-  @panel = new MailPanel $("#mail-panel"), @model
+  @panel = new MailPanel $("#mail-panel"), @mail
 
   $(el).on "submit", "form", (event) ->
     $form = $(this)

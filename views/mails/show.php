@@ -1,7 +1,7 @@
 <?
 $this->setPageOptions($is_outbox ? 'Gesendete Nachricht' : 'Empfangene Nachricht', 'mail-show');
 $this->setPageData(array('message-read' => $mail['unread'] ? 0 : 1));
-$this->addPage('mails/_message_reply');
+$this->addFooter('mails/_index_footer');
 $additional_panel = $this->render_partial('mails/_mail_panel');
 
 $system_mail = $mail['sender_id'] === '____%system%____';
@@ -34,9 +34,20 @@ $system_mail = $mail['sender_id'] === '____%system%____';
 
 <? if (!$system_mail && !$is_outbox) echo $this->render_partial('mails/_message_fast_reply') ?>
 
+<?
+$uid = $controller->currentUser()->id;
+$json = array(
+  'message_id' => $mail['message_id'],
+  'sender_id'  => $mail['sender_id'],
+  'subject'    => $mail['subject'],
+  'message'    => $mail['message'],
+  'unread'     => $mail['unread'],
+  'recipients' => $mail['sender_id'] === $uid ? $mail['receivers'] : array($uid => $mail['receivers'][$uid])
+);
+?>
 
 <script>
-STUDIP.Mobile.bootstraps.mail = <?= json_encode($controller->filter_utf8($mail)) ?>;
+STUDIP.Mobile.bootstraps.mail = <?= json_encode($controller->filter_utf8($json)) ?>;
 </script>
 
 <script src="<?= $plugin_path?>/public/javascripts/bundle/page_mails_show.js"></script>
