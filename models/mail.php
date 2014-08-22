@@ -99,13 +99,8 @@ class Mail {
 
     static function delete($user, $mail)
     {
-        $stmt = \DBManager::get()->prepare("UPDATE `message_user`
-            SET deleted = '1'
-            WHERE message_user.user_id = ?
-            AND message_user.message_id = ?");
-        $stmt->execute(array($user->id, $mail['message_id']));
-
-        return $stmt->rowCount();
+        $messaging = new \messaging;
+        return $messaging->delete_message($mail['message_id'], $user->id, true);
     }
 
     static function markMail($user, &$mail, $mark_as_read)
