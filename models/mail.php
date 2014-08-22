@@ -181,15 +181,14 @@ class Mail {
         $message = new \messaging();
 
         // wenn empfänger kein array, mach ein draus
-        if (is_array($empf)) {
+        if (!is_array($empf)) {
             $empf_array = array($empf);
         } else {
             $empf_array = $empf;
         }
 
         //senden der Nachricht
-        $send = $message->insert_message(mysql_escape_string(utf8_decode($nachricht)), mysql_escape_string($empf_array),
-                                         mysql_escape_string($abs), '', '', '', '',mysql_escape_string( utf8_decode($betreff)), '', 'normal');
+        $send = $message->insert_message($nachricht, $empf_array, $abs, '', '', '', '', $betreff, '', 'normal');
         return $send > 0;
     }
 
