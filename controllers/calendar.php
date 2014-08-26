@@ -19,7 +19,7 @@ class CalendarController extends AuthenticatedController
         //give weekday to the view
         $this->weekday = $weekday;
         //get events for current weekday
-        $this->termine = CalendarModel::getDayDates($this->currentUser()->id, $weekday);
+        $this->termine = CalendarModel::getDayDates($this->currentUser(), $weekday);
     }
 
     function kalender_action($year = NULL, $month = NULL)
@@ -29,9 +29,23 @@ class CalendarController extends AuthenticatedController
             $month = date("n");
             $year  = date("Y");
         }
-        //make a timestamp for the date
-        $this->stamp = mktime(0,0,0,$month,1, $year);
-        //get dates of the month
-        $this->dates = CalendarModel::getMonthDates( $this->currentUser,$this->stamp );
+
+        $this->stamp = mktime(0, 0, 0, $month, 1, $year);
+        $last_month    = $this->getEvents($year, $month - 1);
+        $current_month = $this->getEvents($year, $month);
+        $next_month    = $this->getEvents($year, $month + 1);
+
+        $this->events = array_merge($last_month, $current_month, $next_month);
+    }
+
+    function events_action($year, $month)
+    {
+        $this->render_json($this->getEvents($year, $month));
+    }
+
+    private function getEvents($year, $month)
+    {
+        $timestamp = mktime(0, 0, 0, $month, 1, $year);
+        return CalendarModel::getMonthEvents($this->currentUser(), $timestamp);
     }
 }

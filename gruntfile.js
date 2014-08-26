@@ -4,6 +4,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     var browserifyFiles = {
+        './public/javascripts/bundle/page_calendar.js':
+        ['./public/javascripts/page_calendar.coffee'],
         './public/javascripts/bundle/page_mails_show.js':
         ['./public/javascripts/page_mails_show.coffee'],
         './public/javascripts/bundle/page_mails_compose.js':
