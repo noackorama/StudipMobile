@@ -28,9 +28,11 @@ class CalendarController extends AuthenticatedController
         if (empty($year) || empty($month)) {
             $month = date("n");
             $year  = date("Y");
+            $this->stamp = time();
+        } else {
+            $this->stamp = mktime(0, 0, 0, $month, 1, $year);
         }
 
-        $this->stamp = mktime(0, 0, 0, $month, 1, $year);
         $last_month    = $this->getEvents($year, $month - 1);
         $current_month = $this->getEvents($year, $month);
         $next_month    = $this->getEvents($year, $month + 1);
@@ -45,7 +47,9 @@ class CalendarController extends AuthenticatedController
 
     private function getEvents($year, $month)
     {
-        $timestamp = mktime(0, 0, 0, $month, 1, $year);
-        return CalendarModel::getMonthEvents($this->currentUser(), $timestamp);
+        $start = mktime(0, 0, 0, $month,     1, $year);
+        $end   = mktime(0, 0, 0, $month + 1, 1, $year);
+
+        return CalendarModel::getCalendar($this->currentUser(), $start, $end);
     }
 }

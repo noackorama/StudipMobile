@@ -1,5 +1,7 @@
 @import "mixins.less";
 
+@import "jqm-calendar.less";
+
 .ui-header .ui-title {
   margin: .6em 10% .8em;
 }
@@ -368,7 +370,7 @@ img.contact {
   text-shadow: 0 1px 1px #FFFFFF;
 }
 
-.calendar{
+.calendar {
   width:100%;
   border:1px dashed rgba(0,0,0,0.1);
 }
@@ -437,4 +439,27 @@ body.calendar .ui-page {
 .calendar_time {
   font-size:small;
   color:#656565;
+}
+
+#calendar-show {
+  span.time {
+    font-weight: normal;
+    font-size: 0.8em;
+    opacity: 0.5;
+    width: 6em;
+    display: inline-block;
+  }
+
+  .calendar-popup {
+    div.time {
+      margin: -15px -15px 15px -15px;
+    }
+
+    .properties {
+
+      dt {
+        font-weight: bold;
+      }
+    }
+  }
 }

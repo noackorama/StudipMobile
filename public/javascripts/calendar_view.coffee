@@ -1,5 +1,6 @@
 helpers = require './helpers.coffee'
 Q = require '../vendor/q/q.js'
+listItemView = require './calendar_list_item.coffee'
 
 module.exports = class CalendarView
   constructor: (selector, events, @date) ->
@@ -11,24 +12,28 @@ module.exports = class CalendarView
   setupJQMCalendar: ($el) ->
     @calendar = @createCalendar $el
     $el.on 'beforerefresh', @bindRefresh
+    $el.find("> ul.ui-listview").listview("option", "icon", "info")
 
   createCalendar: ($el) ->
     $el.jqmCalendar
       events: _.flatten _.values @events
       date: @date
-      months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-      days: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+      months: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+      days: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
       startOfWeek: 1
+      listItemFormatter: @listItemFormatter
     $el.data 'jqmCalendar'
 
   bindRefresh: (event, date) =>
     [month, year] = [date.getMonth(), date.getFullYear()]
     return  if @calendar.settings.date.getMonth() is month and @calendar.settings.date.getFullYear() is year
 
-    $.mobile.loading 'show'
     @calendar.settings.date = date
 
-    hide_it = _.bind $.mobile.loading, $.mobile, 'hide'
+    timer = setTimeout (-> $.mobile.loading 'show'), 300
+    hide_it = ->
+      clearTimeout timer
+      $.mobile.loading 'hide'
 
     $(document).ajaxStop hide_it
 
@@ -67,3 +72,10 @@ module.exports = class CalendarView
     current = new Date year, month
     next    = new Date year, month + 1
     [last, date, next]
+
+  listItemFormatter: ($listItem, timeString, summary, event) =>
+    $listItem.append listItemView
+        event: event
+        timeString: timeString
+        summary: summary
+    _.defer -> $listItem.parent('ul')[0].scrollIntoView()

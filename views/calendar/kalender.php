@@ -1,10 +1,10 @@
 <?
-$this->setPageOptions('Planer', 'calendar-planer');
+$this->setPageOptions('Terminkalender', 'calendar-show');
 ?>
 
 <div id=calendar></div>
 
-<link rel="stylesheet"  href="<?= $plugin_path ?>/public/vendor/jqm-calendar/jw-jqm-cal.css">
+
 <script src="<?= $plugin_path ?>/public/vendor/jqm-calendar/jw-jqm-cal.js"></script>
 
 <script>

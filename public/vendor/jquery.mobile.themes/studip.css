@@ -13,6 +13,11 @@
 /* Swatches */
 /* A
 -----------------------------------------------------------------------------------------------------------*/
+.ui-popup-screen.in {
+  opacity: .5;
+  background: black;
+}
+
 .ui-bar-a {
 	border: 1px solid #24437c /*{a-bar-border}*/;
 	background: #24437c /*{a-bar-background-color}*/;
