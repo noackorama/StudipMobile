@@ -23,7 +23,8 @@ module.exports = function (grunt) {
                     sourceMap: true
                 },
                 files: {
-                    'public/stylesheets/mobile.css': 'public/stylesheets/mobile.less'
+                    'public/stylesheets/mobile.css': 'public/stylesheets/mobile.less',
+                    'public/stylesheets/studip.css': 'public/stylesheets/studip.less'
                 }
             },
             production: {
@@ -32,7 +33,8 @@ module.exports = function (grunt) {
                     cleancss: true
                 },
                 files: {
-                    'mobile.css': 'mobile.less'
+                    'mobile.css': 'mobile.less',
+                    'studip.css': 'studip.less'
                 }
             }
         },

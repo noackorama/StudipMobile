@@ -6,7 +6,7 @@ class StudipMobile extends StudipPlugin implements SystemPlugin
 
     const DROPBOX_ENABLED = false;
 
-    const AUTOMATIC_REDIRECT = true;
+    const AUTOMATIC_REDIRECT = false;
 
     public function __construct() {
         parent::__construct();
@@ -14,6 +14,19 @@ class StudipMobile extends StudipPlugin implements SystemPlugin
         if (self::AUTOMATIC_REDIRECT) {
             $this->redirectToMobile();
         }
+
+        $mobile_url = PluginEngine::getLink($this, null, '', true);
+
+        $top_navigation = new Navigation('Mobil', $mobile_url);
+        $top_navigation->setImage($this->getPluginUrl() . '/public/images/header.png',
+                                  array('title' => 'Zur mobilen Ansicht wechseln'));
+        Navigation::insertItem('/studip_mobile', $top_navigation, 'start');
+
+        $footer_navigation = clone $top_navigation;
+        $footer_navigation->setTitle('Mobilansicht');
+        Navigation::insertItem('/footer/studip_mobile', $footer_navigation, 'help');
+
+        PageLayout::addStylesheet($this->getPluginUrl() . '/public/stylesheets/studip.css');
     }
 
 
