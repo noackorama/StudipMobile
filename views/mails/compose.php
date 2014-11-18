@@ -1,5 +1,5 @@
 <?
-$this->setPageOptions('Nachricht schreiben', 'mail-compose');
+$this->setPageOptions('mail-compose', 'Nachricht schreiben');
 echo $this->render_partial('mails/_add_contact');
 
 $this->addFooter('mails/_index_footer', array('selected' => 'compose'));

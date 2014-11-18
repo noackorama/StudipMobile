@@ -1,6 +1,6 @@
 <?
 $selected = 'outbox';
-$this->setPageOptions('Postausgang (' . intval(sizeof($messages)) . ')', 'mails-index');
+$this->setPageOptions('mails-index', 'Postausgang (' . intval(sizeof($messages)) . ')');
 $this->addFooter('mails/_index_footer', compact('selected'));
 $this->setPageData(array('cache' => 'never'));
 ?>

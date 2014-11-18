@@ -2,7 +2,7 @@
   <? if (count($next_dates)) : ?>
 
 
-    <li data-role="list-divider" data-theme="c">
+    <li data-role="list-divider">
       Nächster Termin
     </li>
 

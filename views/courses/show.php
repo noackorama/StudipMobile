@@ -1,8 +1,6 @@
 <?
-$page_title = "Kurs: " . Studip\Mobile\Helper::out($course->name);
-$page_id = "courses-show";
-$back_button = true;
-$this->set_layout("layouts/single_page");
+$page_title = $GLOBALS['SEM_TYPE'][$course->status]['name'] . ': ' . $course->name;
+$this->setPageOptions('courses-show', $page_title);
 
 // check if there are Geolocations
 $resources_locations = array_filter($resources, function ($resource) {
@@ -43,7 +41,7 @@ $resources_locations = array_filter($resources, function ($resource) {
 <fieldset class="ui-grid-a">
 
   <div class="ui-block-a">
-    <a href="<?= $controller->url_for("activities/index", $course->id) ?>" data-role="button">Aktivitäten</a>
+    <a href="<?= $controller->url_for("courses/show_activities", $course->id) ?>" data-role="button">Aktivitäten</a>
   </div>
 
   <div class="ui-block-b">

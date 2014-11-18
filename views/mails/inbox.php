@@ -1,6 +1,6 @@
 <?
 $selected = 'inbox';
-$this->setPageOptions('Posteingang (' . intval(sizeof($messages)) . ')', 'mails-index');
+$this->setPageOptions('mails-index', 'Posteingang (' . intval(sizeof($messages)) . ')');
 $this->addFooter('mails/_index_footer', compact('selected'));
 $this->setPageData(array('cache' => 'never'));
 ?>

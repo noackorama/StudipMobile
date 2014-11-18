@@ -1,6 +1,6 @@
 <? use Studip\Mobile\Helper; ?>
 
-<ul id="activities" data-role="listview" data-filter="true" data-filter-placeholder="Suchen">
+<ul id="activities" data-role="listview" data-filter="<?= sizeof($activities) > 4 ? 'true' : '' ?>" data-filter-placeholder="Filtern">
 
   <?$last_date = null; ?>
   <? foreach ($activities as $activity) { ?>

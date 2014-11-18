@@ -21,7 +21,7 @@
     <?= isset($additional_header) ? $additional_header : "" ?>
   </div><!-- /header -->
 
-  <div data-role="content">
+  <div data-role="content" data-theme="c">
     <? if (isset($flash['notice'])) { echo $this->render_partial('layouts/_flash_notice'); } ?>
 
     <?= $content_for_layout ?>

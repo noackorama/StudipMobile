@@ -1,8 +1,8 @@
-<ul data-role="listview" data-filter="true" data-filter-placeholder="Suchen" data-divider-theme="d">
+<ul data-role="listview" data-filter="<?= sizeof($messages) > 4 ? 'true' : '' ?>" data-filter-placeholder="Suchen" data-divider-theme="d">
 
   <? if (empty($messages)) { ?>
 
-    <li data-theme="e" data-role="list-divider" data-swipeurl=""><center>Keine Nachrichten vorhanden</center></li>
+    <li data-theme="e" data-role="list-divider"><center>Keine Nachrichten vorhanden</center></li>
 
   <? } else { ?>
 

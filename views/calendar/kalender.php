@@ -1,5 +1,5 @@
 <?
-$this->setPageOptions('Terminkalender', 'calendar-show');
+$this->setPageOptions('calendar-show', 'Terminkalender');
 ?>
 
 <div id=calendar></div>

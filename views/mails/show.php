@@ -1,5 +1,5 @@
 <?
-$this->setPageOptions($is_outbox ? 'Gesendete Nachricht' : 'Empfangene Nachricht', 'mail-show');
+$this->setPageOptions('mail-show', $is_outbox ? 'Gesendete Nachricht' : 'Empfangene Nachricht');
 $this->setPageData(array('message-read' => $mail['unread'] ? 0 : 1));
 $this->addFooter('mails/_index_footer');
 $additional_panel = $this->render_partial('mails/_mail_panel');

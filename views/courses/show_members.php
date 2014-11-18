@@ -1,22 +1,18 @@
 <?
-$page_title = "Teilnehmer";
-$page_id = "courses-show_members";
-$back_button = true;
-$this->set_layout("layouts/single_page");
+$this->setCoursePageHeader('courses-show_members', _("Teilnehmer in %s"), $course);
 
-//rolle
 $status = '';
 ?>
 
 <? if (isset($members)) : ?>
 
-<ul id="courses" data-role="listview" data-filter="true" data-filter-placeholder="Suchen" data-divider-theme="d" >
+<ul id="courses" data-role="listview" data-filter="<?= sizeof($members) > 4 ? 'true' : '' ?>" data-filter-placeholder="Filtern" data-divider-theme="d" >
     <? foreach ($members AS $member) {
         if ($status != $member['status']) {
           $status=$member['status'];
     ?>
         <li data-role="list-divider">
-          <?= ucfirst(Studip\Mobile\Helper::out($member['status'])) ?>
+          <?= ucfirst($this->out($member['status'])) ?>
         </li>
     <? } ?>
 
@@ -26,9 +22,9 @@ $status = '';
         <?= Avatar::getAvatar($member['user_id'])->getImageTag(Avatar::MEDIUM, array('class' => 'ui-li-thumb')) ?>
 
         <h3>
-          <?=Studip\Mobile\Helper::out($member["title_front"]) ?>
-          <?=Studip\Mobile\Helper::out($member['Vorname']) ?>
-          <?=Studip\Mobile\Helper::out($member['Nachname'])?>
+          <?=$this->out($member["title_front"]) ?>
+          <?=$this->out($member['Vorname']) ?>
+          <?=$this->out($member['Nachname'])?>
         </h3>
       </a>
     </li>

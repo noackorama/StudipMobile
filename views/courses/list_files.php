@@ -1,10 +1,7 @@
 <?
-$page_title = _("Alle Dateien in ") . studip_utf8encode($GLOBALS['SEM_TYPE'][$course->status]['name']);
-$additional_header = $this->render_partial("courses/_list_files_header");
-$page_id = "courses-list-files";
-$back_button = TRUE;
+$this->setCoursePageHeader('courses-list-files', _("Alle Dateien in %s"), $course);
+
 $popups = "";
-$this->set_layout("layouts/single_page");
 ?>
 
 <? if (!sizeof($files)) { ?>
@@ -16,7 +13,7 @@ $this->set_layout("layouts/single_page");
 <? } else { ?>
 
 <? if (StudipMobile::DROPBOX_ENABLED) : ?>
-  <a href="<?= $controller->url_for("courses/dropfiles", $seminar_id) ?>"
+  <a href="<?= $controller->url_for("courses/dropfiles", $course->id) ?>"
      class="externallink" data-ajax="false" data-role="button"
      data-theme="b">
     Alle Dateien in meine Dropbox
@@ -29,7 +26,7 @@ $this->set_layout("layouts/single_page");
       <?
       $popup_id = "popup-file-" . $file['id'];
       $filesize = round($file["filesize"] / 1024) . ' kB';
-      $new_content = object_get_visit($seminar_id, "documents", false) < $file['chdate'];
+      $new_content = object_get_visit($course->id, "documents", false) < $file['chdate'];
       ?>
 
       <li>
