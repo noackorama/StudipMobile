@@ -4,6 +4,7 @@ namespace Studip\Mobile;
 require "StudipMobileAuthenticatedController.php";
 require dirname(__FILE__) . "/../models/course.php";
 require dirname(__FILE__) . "/../models/activity.php";
+require dirname(__FILE__) . "/../models/news.php";
 
 /**
  *    get the courses and all combined stuff, like files and
@@ -128,6 +129,21 @@ class CoursesController extends AuthenticatedController
         if (\Request::submitted("deep") || $count <= self::MEMBER_THRESHOLD) {
             $this->members = Course::getMembers($id);
         }
+    }
+
+    /*
+     * show the news of a course
+     */
+    function show_news_action($id = NULL)
+    {
+        $this->requireCourse($id);
+
+        $this->news = News::findForCourse($this->currentUser(), $this->course);
+        /*
+        if ($this->news === false) {
+            $this->error(401);
+        }
+        */
     }
 
     /*
