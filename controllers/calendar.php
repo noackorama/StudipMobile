@@ -42,7 +42,7 @@ class CalendarController extends AuthenticatedController
 
     function events_action($year, $month)
     {
-        $this->render_json($this->getEvents($year, $month));
+        $this->render_json(@$this->getEvents($year, $month));
     }
 
     private function getEvents($year, $month)
