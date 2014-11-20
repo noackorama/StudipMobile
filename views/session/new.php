@@ -23,12 +23,12 @@ $desktop_url = URLHelper::getLink($GLOBALS['ABSOLUTE_URI_STUDIP'], array(StudipM
       <input type=hidden name=again value=yes>
       <input type=hidden name=cancel_login value=1>
 
-      <div data-role="fieldcontain">
+      <div class="ui-field-contain">
         <label for="username">Nutzername:</label>
         <input type="text" name="username" id="username" value="">
       </div>
 
-      <div data-role="fieldcontain">
+      <div class="ui-field-contain">
         <label for="password">Passwort:</label>
         <input type="password" name="password" id="password" value="">
       </div>

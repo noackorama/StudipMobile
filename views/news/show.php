@@ -19,11 +19,11 @@ else {
 ?>
 
 <ul data-role="listview">
-  <li data-role="fieldcontain">
+  <li>
     <h3><?= $this->out($news->topic) ?></h3>
   </li>
 
-  <li data-role="fieldcontain">
+  <li>
     <p style="padding-top:12px;">
       <strong>Von:</strong> <?= $this->out($news->author) ?>
     </p>
