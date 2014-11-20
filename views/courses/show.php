@@ -1,6 +1,5 @@
 <?
-$page_title = $GLOBALS['SEM_TYPE'][$course->status]['name'] . ': ' . $course->name;
-$this->setPageOptions('courses-show', $page_title);
+$this->setPageOptions('courses-show', $course->name);
 
 // check if there are Geolocations
 $resources_locations = array_filter($resources, function ($resource) {
@@ -8,7 +7,12 @@ $resources_locations = array_filter($resources, function ($resource) {
 });
 ?>
 
-<h2><?= Studip\Mobile\Helper::out($course->name) ?></h2>
+<h2>
+    <small>
+        <?= $this->out($GLOBALS['SEM_TYPE'][$course->status]['name']) ?>:
+    </small>
+    <?= Studip\Mobile\Helper::out($course->name) ?>
+</h2>
 <? if ($course->subtitle) { ?>
     <h4><?= Studip\Mobile\Helper::out($course->subtitle) ?></h4>
 <? } ?>
@@ -41,18 +45,18 @@ $resources_locations = array_filter($resources, function ($resource) {
 <fieldset class="ui-grid-a">
 
   <div class="ui-block-a">
-    <a href="<?= $controller->url_for("courses/show_activities", $course->id) ?>" data-role="button">Aktivitäten</a>
+    <a href="<?= $controller->url_for("courses/show_activities", $course->id) ?>"data-corners=false data-role="button">Aktivitäten</a>
   </div>
 
   <div class="ui-block-b">
-    <a href="<?= $controller->url_for("courses/show_news", $course->id) ?>" data-role="button">News</a>
+    <a href="<?= $controller->url_for("courses/show_news", $course->id) ?>"data-corners=false data-role="button">News</a>
   </div>
 
   <div class="ui-block-a">
-    <a href="<?= $controller->url_for("courses/list_files", $course->id) ?>" data-role="button">Dateien</a>
+    <a href="<?= $controller->url_for("courses/list_files", $course->id) ?>"data-corners=false data-role="button">Dateien</a>
   </div>
 
   <div class="ui-block-b">
-    <a href="<?= $controller->url_for("courses/show_members", $course->id) ?>"  class="externallink" data-ajax="false" data-role="button">Teilnehmer</a>
+    <a href="<?= $controller->url_for("courses/show_members", $course->id) ?>"  class="externallink" data-ajax="false"data-corners=false data-role="button">Teilnehmer</a>
   </div>
 </fieldset>
