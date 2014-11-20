@@ -9,7 +9,7 @@ $desktop_url = URLHelper::getLink($GLOBALS['ABSOLUTE_URI_STUDIP'], array(StudipM
     <h1>Stud.IP - Login</h1>
   </div><!-- /header -->
 
-  <div data-role="content">
+  <div class="ui-content" role="main">
 
     <center><img src="<?=$plugin_path ?>/public/images/logo.png" style="border:0;width:80%"></center>
     <? if($flash['failed_login']) :?>

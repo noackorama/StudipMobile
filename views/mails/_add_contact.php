@@ -4,7 +4,7 @@
     <h1>Kontakte auswählen?</h1>
   </div>
 
-  <div role="main" class="ui-corner-bottom ui-content">
+  <div class="ui-corner-bottom ui-content">
 
     <div class="buttons" data-role=controlgroup data-type=horizontal>
       <button class=select data-theme="b">Auswählen</button>

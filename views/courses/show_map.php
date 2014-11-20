@@ -23,7 +23,7 @@ foreach ($resources AS $reso) {
        data-iconpos="notext" data-theme="d"></a>
   </div><!-- /header -->
 
-  <div data-role="content">
+  <div class="ui-content" role="main">
 
 
     <?

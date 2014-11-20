@@ -1,4 +1,5 @@
 <div data-role="page"
+     data-theme="c"
      id="<?= $page_id ?: '' ?>"
      <?
      if (isset($_dataAttributes)) {
@@ -21,7 +22,7 @@
     <?= isset($additional_header) ? $additional_header : "" ?>
   </div><!-- /header -->
 
-  <div data-role="content" data-theme="c">
+  <div class="ui-content" data-theme="c" role="main">
     <? if (isset($flash['notice'])) { echo $this->render_partial('layouts/_flash_notice'); } ?>
 
     <?= $content_for_layout ?>

@@ -5,7 +5,7 @@
         <h1><?= $page_title ?: 'Stud.IP' ?></h1>
     </div><!-- /header -->
 
-    <div data-role="content">
+    <div class="ui-content" role="main">
         <?= $content_for_layout ?>
     </div><!-- /content -->
 </div>

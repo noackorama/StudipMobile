@@ -13,7 +13,7 @@
         <a href="javascript:history.back()" class="externallink" data-ajax="false" data-icon="delete" data-iconpos="notext" data-theme="d"></a>
       </div><!-- /header -->
       
-      <div data-role="content">
+      <div class="ui-content" role="main">
         <?= $content_for_layout ?>
       </div><!-- /content -->
   </body>

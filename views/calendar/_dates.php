@@ -9,7 +9,7 @@
       <h1><?= $key ?>.<?= date("n", $stamp) ?>.<?= date("Y", $stamp) ?></h1>
     </div>
 
-    <div data-role="content" class="content">
+    <div class="ui-content content" role="main">
       <? if ($value != NULL) :?>
         <? foreach ($value as $key2 => $value2) { ?>
           <div class="calendar_time"><?= $value2["start"] ?> - <?= $value2["end"] ?>:</div>
