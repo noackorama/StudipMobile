@@ -1,4 +1,5 @@
 <?
+$additional_header = $this->render_partial('calendar/_navbar', array('active' => 'kalender'));
 $this->setPageOptions('calendar-show', 'Terminkalender');
 ?>
 
