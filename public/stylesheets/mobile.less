@@ -2,6 +2,10 @@
 
 @import "jqm-calendar.less";
 
+.ui-footer-fixed {
+  bottom: -2px;
+}
+
 /* wider header titles */
 .ui-header .ui-title {
   margin: 0 10%;
@@ -60,7 +64,7 @@ span.required {
 
 #courses-show {
   h4 {
-    margin-top: -15px;
+    margin-top: -16px;
   }
 
   #inline-dates {
@@ -161,7 +165,7 @@ span.required {
   }
 
   ul.message-few-attachments {
-    margin: 0 -15px;
+    margin: 0 -16px;
 
     h4 {
       font-size: 0.8em;
@@ -169,7 +173,7 @@ span.required {
   }
 
 
-  div[data-role=content] {
+  div.ui-content {
     position: relative;
   }
 
@@ -197,6 +201,7 @@ span.required {
       padding-left: 35px;
 
       textarea {
+        // some text
         margin: 0;
         height: 5.5em;
         border: none;
@@ -271,11 +276,11 @@ span.required {
   #show-contacts {
     position: absolute;
     right: 0;
-    top: -45px;
+    top: 0px;
   }
 
   ul.selected {
-    margin: 0px -15px 15px -15px;
+    margin: 0px -16px 16px -16px;
 
     li {
       font-weight: normal;
@@ -437,7 +442,7 @@ img.contact {
 
   .calendar-popup {
     div.time {
-      margin: -15px -15px 15px -15px;
+      margin: -16px -16px 16px -16px;
     }
 
     .properties {

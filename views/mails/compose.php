@@ -17,26 +17,27 @@ STUDIP.Mobile.bootstraps.contacts = <?= $contacts ? json_encode($contacts) : 'nu
 <ul id="composer" data-role="listview" data-theme=d>
 
   <li class=recipients>
-      <label for=rec-search>
+
+      <? if (sizeof($contacts)) : ?>
+          <div id=show-contacts>
+              <a href="#mail-show-contacts" data-role=button
+                 data-rel=popup
+                 data-transition=slideup
+                 data-shadow="false"
+                 data-icon=plus data-mini=true data-iconpos=notext>Ihre Kontakte</a>
+          </div>
+      <? endif ?>
+
+    <div class="ui-field-contain">
+      <label for=rec-list>
         Empfänger: <span class=required>*</span>
       </label>
 
-      <? if (sizeof($contacts)) : ?>
-      <div id=show-contacts>
-        <a href="#mail-show-contacts" data-role=button
-           data-rel=popup
-           data-transition=slideup
-           data-shadow="false"
-           data-icon=plus data-mini=true data-iconpos=notext>Ihre Kontakte</a>
-      </div>
-      <? endif ?>
-
-      <ul class=selected data-role=listview data-inset=false data-icon=minus></ul>
-    <div class="ui-field-contain">
-
-      <input id=rec-search type=search data-clear-btn=true
-             data-corners=false placeholder="Suchen">
+      <ul id=rec-list "class=selected data-role=listview data-inset=false data-icon=minus></ul>
     </div>
+
+    <input id=rec-search type=search data-clear-btn=true
+           data-corners=false placeholder="Suchen">
   </li>
 
   <li class=subject>
