@@ -33,7 +33,7 @@
     <div data-role="header" data-theme="a" class="ui-corner-top">
       <h1>Nachricht löschen?</h1>
     </div>
-    <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+    <div data-theme="d" class="ui-corner-bottom ui-content">
       <h3 class="ui-title">Möchten Sie diese Nachricht löschen?</h3>
 
       <div data-role="controlgroup" data-type="horizontal">
