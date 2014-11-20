@@ -1,12 +1,13 @@
-<div data-role="popup" id=mail-show-contacts style="max-width:400px;">
-  <div data-role="header" data-theme="e" class="ui-corner-top">
+<div data-role="popup" id=mail-show-contacts data-theme="c" style="max-width:400px;">
+
+  <div data-role="header" class="ui-corner-top" data-theme="e">
     <h1>Kontakte auswählen?</h1>
   </div>
 
   <div role="main" class="ui-corner-bottom ui-content">
 
-    <div data-role=controlgroup data-type=horizontal>
-      <button class=select data-theme=a>Auswählen</button>
+    <div class="buttons" data-role=controlgroup data-type=horizontal>
+      <button class=select data-theme="b">Auswählen</button>
       <a data-role=button href="#mail-compose" data-rel=back>Abbrechen</a>
     </div>
 

@@ -13,24 +13,21 @@ div[data-role='header'] .side-menu-link {
 }
 
 ul .collapsible-listitem {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+  padding: 0 !important;
 
-  & > div .ui-collapsible-heading {
+  .ui-collapsible {
+    margin: 0 !important;
+  }
+
+  > div .ui-collapsible-heading {
     margin: 0;
   }
 
-  & > div .ui-collapsible-heading a {
+  > div .ui-collapsible-heading a {
     border-bottom: none;
   }
 
-  & > div .ui-collapsible-heading .ui-btn {
-    border-top: none;
-    border-right-width: 0px;
-    border-left-width: 0px;
-  }
-
-  & > div .ui-collapsible-content {
+  > div .ui-collapsible-content {
     border: none;
     margin: 0;
     background: #ffffff;
@@ -38,7 +35,7 @@ ul .collapsible-listitem {
     font-size: 0.8em;
   }
 
-  & > div .ui-collapsible-content .ui-li {
+  > div .ui-collapsible-content .ui-li {
     border-top: none;
   }
 }
@@ -69,6 +66,14 @@ span.required {
   #inline-dates {
     font-weight: normal;
     font-size: 0.8em;
+  }
+
+  #course-next-sessions {
+    margin-bottom: 0;
+  }
+
+  #course-description, #course-details {
+    margin-top: 1.5em;
   }
 }
 
@@ -133,10 +138,6 @@ span.required {
     font-size: 0.8em;
   }
 
-  .message-receivers .ui-btn-text {
-    font-size: 0.8em;
-  }
-
   .message-date {
     font-weight: normal;
     font-size: 0.8em;
@@ -148,7 +149,7 @@ span.required {
     font-size: 12px;
     font-weight: normal;
     white-space: normal;
-    padding: 1em;
+    padding: 3em 1em 1em;
   }
 
   .empty {
@@ -157,10 +158,6 @@ span.required {
 
   .message-many-attachments {
     margin: 0;
-
-    .ui-btn-text {
-      font-size: 0.8em;
-    }
   }
 
   ul.message-few-attachments {
@@ -267,10 +264,14 @@ span.required {
     padding: 0;
   }
 
+  .recipients {
+    padding-top: 30px;
+  }
+
   #show-contacts {
     position: absolute;
     right: 0;
-    top: -0.5em;
+    top: -45px;
   }
 
   ul.selected {
@@ -293,6 +294,10 @@ span.required {
     margin-top: 0;
   }
 
+  .buttons {
+    font-size: 0.8em;
+  }
+
   li.contact {
     padding: 0;
 
@@ -308,10 +313,6 @@ span.required {
         position: absolute;
         right: 0.5em;
       }
-    }
-
-    .ui-btn-text {
-      position: initial;
     }
   }
 }

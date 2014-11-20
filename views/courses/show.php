@@ -20,19 +20,19 @@ $resources_locations = array_filter($resources, function ($resource) {
 
 
   <? if ($course->description) : ?>
-    <div data-role="collapsible" data-theme="c" data-content-theme="d">
+    <div id="course-description" data-role="collapsible" data-theme="c" data-content-theme="d" data-inset="true">
       <h3>Beschreibung</h3>
 
       <?= \Studip\Mobile\Helper::correctText($course->description) ?>
     </div>
   <? endif ?>
 
-    <? if (strlen($misc = trim($this->render_partial('courses/_show_misc')))) : ?>
-        <div data-role="collapsible" data-theme="c" data-content-theme="d">
+  <? if (strlen($misc = trim($this->render_partial('courses/_show_misc')))) : ?>
+      <div id="course-details" data-role="collapsible" data-theme="c" data-content-theme="d" data-inset="true">
           <h3>Details</h3>
           <?= $misc ?>
-        </div>
-    <? endif ?>
+      </div>
+  <? endif ?>
 
 <? } ?>
 
@@ -45,16 +45,8 @@ $resources_locations = array_filter($resources, function ($resource) {
   </div>
 
   <div class="ui-block-b">
-    <? if (!empty($resources_locations)) { ?>
-        <a href="<?= $controller->url_for("courses/show_map", $course->id) ?>"
-           data-role="button" class="externallink" data-ajax="false">
-            Karte
-        </a>
-    <? } else { ?>
-        <button disabled="">keine Karte</button>
-    <? } ?>
+    <a href="<?= $controller->url_for("courses/show_news", $course->id) ?>" data-role="button">News</a>
   </div>
-
 
   <div class="ui-block-a">
     <a href="<?= $controller->url_for("courses/list_files", $course->id) ?>" data-role="button">Dateien</a>

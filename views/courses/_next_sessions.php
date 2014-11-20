@@ -1,4 +1,4 @@
-<ul data-role="listview" data-inset="true">
+<ul id="course-next-sessions" data-role="listview" data-inset="true">
   <? if (count($next_dates)) : ?>
 
 
