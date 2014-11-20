@@ -7,12 +7,11 @@
   <div class=actions data-role="controlgroup">
 
     <? if (!$is_outbox) : ?>
-      <div class=read-only>
-        <button data-action=markasunread>Als ungelesen markieren</button>
+      <div class="read-only">
+          <input type="button" data-action=markasunread value="Als ungelesen markieren">
       </div>
-
-      <div class=unread-only>
-        <button data-action=markasread>Als gelesen markieren</button>
+      <div class="unread-only">
+          <input type="button" data-action=markasread value="Als gelesen markieren">
       </div>
 
       <? if ($mail['author_id'] == '____%system%____') : ?>
@@ -26,7 +25,7 @@
 
     <? endif?>
 
-    <button data-action=delete>Löschen</button>
+    <input type="button" data-action=delete value="Löschen">
   </div>
 
 

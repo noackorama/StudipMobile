@@ -3,14 +3,13 @@ helpers = require './helpers.coffee'
 MailPanel = (@$el, @mail) ->
   self = this
 
-  @$el.on 'click', '.actions button', (event) ->
+  @$el.on 'click', '.actions input[data-action]', (event) ->
     action = $(this).data('action')
     if typeof self[action] == 'function'
       self[action](event, $(this))
 
 MailPanel::markasunread = (event, $button) ->
-
-  $button.button('disable')
+  $button.button 'disable'
   $.mobile.loading('show')
 
   $.post helpers.url_for('mails/status/' + @mail.message_id), read: 0
