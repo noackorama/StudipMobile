@@ -1,4 +1,4 @@
-<ul data-role="listview" data-filter="<?= sizeof($messages) > 4 ? 'true' : '' ?>" data-filter-placeholder="Suchen" data-divider-theme="d">
+<ul data-role="listview" data-filter="<?= sizeof($messages) > 4 ? 'true' : '' ?>" data-filter-placeholder="Filtern" data-divider-theme="d">
 
   <? if (empty($messages)) { ?>
 
