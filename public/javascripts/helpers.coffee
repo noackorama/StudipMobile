@@ -14,8 +14,8 @@ openPopup = (message) ->
   id = 'popup-' + popupCounter++
   popup = ['<div class=onetimepopup data-role=popup id=', id, '><p>', message, '</p></div>'].join ''
 
-  getActivePage().append(popup).trigger('pagecreate')
-  $("#" + id).popup('open')
+  getActivePage().append(popup)
+  $("#" + id).popup().popup('open')
 
 module.exports =
     url_for:   url_for
