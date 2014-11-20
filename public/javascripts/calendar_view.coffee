@@ -11,6 +11,7 @@ module.exports = class CalendarView
 
   setupJQMCalendar: ($el) ->
     @calendar = @createCalendar $el
+    $el.trigger 'change', @date
     $el.on 'beforerefresh', @bindRefresh
     $el.find("> ul.ui-listview").listview("option", "icon", "info")
 
