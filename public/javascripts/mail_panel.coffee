@@ -16,7 +16,7 @@ MailPanel::markasunread = (event, $button) ->
   $.post helpers.url_for('mails/status/' + @mail.message_id), read: 0
    .then ->
        $.mobile.loading 'hide'
-       $.mobile.activePage.attr 'data-message-read', 0
+       helpers.getActivePage().attr 'data-message-read', 0
        $button.button 'enable'
      , ->
        $.mobile.loading('hide')
@@ -29,7 +29,7 @@ MailPanel::markasread = (event, $button) ->
   $.post helpers.url_for('mails/status/' + @mail.message_id), read: 1
    .then ->
       $.mobile.loading 'hide'
-      $.mobile.activePage.attr 'data-message-read', 1
+      helpers.getActivePage().attr 'data-message-read', 1
       $button.button 'enable'
     , ->
       $.mobile.loading 'hide'
