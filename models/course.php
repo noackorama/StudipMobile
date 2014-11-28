@@ -52,7 +52,7 @@ class Course {
 
         $query = "SELECT seminare.VeranstaltungsNummer AS sem_nr,
                          schedule_seminare.color AS color,
-                         seminare.Name, seminare.Seminar_id,
+                         seminare.Name, seminare.Seminar_id, seminare.Untertitel,
                          seminare.status as sem_status,
                          seminar_user.status, seminar_user.gruppe,
                          seminare.chdate, seminare.visible,
