@@ -1,16 +1,19 @@
-<div data-role="page"
-     data-theme="c"
-     id="<?= $page_id ?: '' ?>"
+<?
+if (!isset($_dataAttributes)) {
+    $_dataAttributes = array();
+}
+$_dataAttributes['theme'] = $_dataAttributes['theme'] ?: 'c';
+?>
+<div data-role="page" id="<?= $page_id ?: '' ?>"
      <?
-     if (isset($_dataAttributes)) {
-       foreach ($_dataAttributes as $key => $value) {
+     foreach ($_dataAttributes as $key => $value) {
          if ($value !== false) {
-           printf(' data-%s="%s"', $key,
-                  Studip\Mobile\Helper::out($value));
+             printf(' data-%s="%s"', $key,
+                    Studip\Mobile\Helper::out($value));
          }
-       }
      }
-     ?>>
+     ?>
+     >
 
   <div data-role="header" data-theme="a">
     <? if (!$no_side_menu) echo $this->render_partial("layouts/_side_menu_link") ?>
