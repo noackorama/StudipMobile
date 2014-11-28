@@ -34,7 +34,7 @@
 
   </head>
 
-  <body class="<?= $body_class ?>">
+  <body class="<?= $body_class ?> ui-responsive-panel">
 
     <?= $content_for_layout ?>
 

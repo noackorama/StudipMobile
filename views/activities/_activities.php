@@ -1,6 +1,20 @@
-<? use Studip\Mobile\Helper; ?>
+<?
+use Studip\Mobile\Helper;
+$show_filter = sizeof($activities) > 4;
+?>
 
-<ul id="activities" data-role="listview" data-filter="<?= sizeof($activities) > 4 ? 'true' : '' ?>" data-filter-placeholder="Filtern">
+<? if ($show_filter) : ?>
+<form class="ui-filterable">
+    <input id="filter-input" data-type="search" placeholder="Filtern">
+</form>
+<? endif ?>
+
+<ul id="activities"
+    data-role="listview"
+    <? if ($show_filter) : ?>
+    data-filter="true" data-input="#filter-input"
+    <? endif ?>
+    >
 
   <?$last_date = null; ?>
   <? foreach ($activities as $activity) { ?>

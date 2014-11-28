@@ -2,6 +2,7 @@
 $this->setCoursePageHeader('courses-list-files', _("Alle Dateien in %s"), $course);
 
 $popups = "";
+$show_filter = sizeof($files) > 4;
 ?>
 
 <? if (!sizeof($files)) { ?>
@@ -14,13 +15,24 @@ $popups = "";
 
 <? if (StudipMobile::DROPBOX_ENABLED) : ?>
   <a href="<?= $controller->url_for("courses/dropfiles", $course->id) ?>"
-     class="externallink" data-ajax="false" data-role="button"
-     data-theme="b">
+     class="ui-btn ui-btn-b externallink" data-ajax="false" role="button">
     Alle Dateien in meine Dropbox
   </a><br>
   <? endif ?>
 
-  <ul id="files" data-role="listview" data-split-icon="info" data-split-theme="d" data-filter="<?= sizeof($files) > 4 ? 'true' : '' ?>">
+
+  <? if ($show_filter) : ?>
+      <form class="ui-filterable">
+          <input id="filter-input" data-type="search" placeholder="Filtern">
+      </form>
+  <? endif ?>
+
+  <ul id="files" data-role="listview" data-split-icon="info" data-split-theme="d"
+      <? if ($show_filter) : ?>
+      data-filter="true" data-input="#filter-input"
+      <? endif ?>
+      >
+
     <? foreach($files as $file) { ?>
 
       <?

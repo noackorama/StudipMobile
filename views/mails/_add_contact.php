@@ -1,3 +1,7 @@
+<?
+$show_filter = sizeof($contacts) > 4;
+?>
+
 <div data-role="popup" id=mail-show-contacts data-theme="c" style="max-width:400px;">
 
   <div data-role="header" class="ui-corner-top" data-theme="e">
@@ -7,11 +11,21 @@
   <div class="ui-corner-bottom ui-content">
 
     <div class="buttons" data-role=controlgroup data-type=horizontal>
-      <button class=select data-theme="b">Auswählen</button>
-      <a data-role=button href="#mail-compose" data-rel=back>Abbrechen</a>
+      <button class="ui-btn ui-btn-b select">Auswählen</button>
+      <a class="ui-btn" role=button href="#mail-compose" data-rel=back>Abbrechen</a>
     </div>
 
-    <ul data-role=listview data-filter=<?= sizeof($contacts) > 3 ? 'true' : 'false' ?>>
+    <? if ($show_filter) : ?>
+        <form class="ui-filterable">
+            <input id="filter-input" data-type="search" placeholder="Filtern">
+        </form>
+    <? endif ?>
+
+    <ul data-role=listview
+        <? if ($show_filter) : ?>
+        data-filter="true" data-input="#filter-input"
+        <? endif ?>
+        >
       <? foreach ($contacts as $contact): ?>
         <li class=contact>
 

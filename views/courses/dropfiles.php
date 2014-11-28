@@ -17,7 +17,7 @@ if (($dropCom != "connected"))
 	            finden.<br /><small>StudIp erhält nicht auf Ihre gesamte Dropbox Zugriff.</small>
 	    </li>
     </ul>
-    <a href="<?=$dropCom ?>" data-role="button" data-theme="b">StudIp verbinden</a>
+    <a href="<?=$dropCom ?>" role="button" class="ui-btn ui-btn-b">StudIp verbinden</a>
 	<?
 }
 elseif($dropCom == "connected")

@@ -1,4 +1,19 @@
-<ul data-role="listview" data-filter="<?= sizeof($messages) > 4 ? 'true' : '' ?>" data-filter-placeholder="Filtern" data-divider-theme="d">
+<?
+$show_filter = sizeof($messages) > 4;
+?>
+
+<? if ($show_filter) : ?>
+    <form class="ui-filterable">
+        <input id="filter-input" data-type="search" placeholder="Filtern">
+    </form>
+<? endif ?>
+
+
+<ul data-role="listview" data-divider-theme="d"
+    <? if ($show_filter) : ?>
+    data-filter="true" data-input="#filter-input"
+    <? endif ?>
+    >
 
   <? if (empty($messages)) { ?>
 

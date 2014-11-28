@@ -29,33 +29,48 @@ $year = date("Y");
 $no_entries = true;
 
 if (array_key_exists(($weekday-1), $termine)) {
+
+    ?>
+   <ul data-role=listview>
+   <?
+
     if (array_key_exists("entries", $termine[$weekday-1])) {
         $calendar_col = $termine[$weekday-1];
 
         $array= $calendar_col->sortEntries();
         if (array_key_exists("col_0", $array)) {
             foreach ($array["col_0"] as $termin ) {
+
+               $termin['start'] = str_pad($termin['start'], 4, "0", STR_PAD_LEFT);
+               $termin['end']   = str_pad($termin['end'], 4, "0", STR_PAD_LEFT);
+
                 if (strlen($termin['id']) >=32) {
                     $link = $controller->url_for("courses/show", substr($termin['id'],0,32));
-                } else {
-                    $link = "";
                 } ?>
 
+                <li>
+                    <? if ($link) : ?>
+                        <a href="<?= $link ?>">
+                    <? endif ?>
 
-                <div class="calendar_time" onclick="location.href='<?=$link ?>'">
-                  <?=substr($termin["start"],0,2) ?>:<?=substr($termin["start"],2,2) ?> -
-                  <?=substr($termin["end"],0,2) ?>:<?=substr($termin["end"],2,2) ?>:
-                </div>
+                    <div class="date">
+                        <?=substr($termin["start"],0,2) ?>:<?=substr($termin["start"],2,2) ?> -
+                        <?=substr($termin["end"],0,2) ?>:<?=substr($termin["end"],2,2) ?>
+                    </div>
 
-                <div class="calendar_bubble"  onclick="location.href='<?=$link ?>'">
-                  <strong><?=Studip\Mobile\Helper::out($termin["content"]) ?> </strong>
-                  <?=Studip\Mobile\Helper::out($termin["title"]) ?>
-                </div>
+                    <h2><?= $this->out($termin["title"]) ?></h2>
+                    <span class=content><?= $this->out($termin["content"]) ?></span>
+
+                    <? if ($link) : ?>
+                        </a>
+                    <? endif ?>
+                </li>
                 <?
             }
             $no_entries = false;
         }
     }
+?></ul><?
 }
 
 if ($no_entries == true) { ?>

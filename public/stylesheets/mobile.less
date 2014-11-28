@@ -1,6 +1,7 @@
 @import "mixins.less";
 
 @import "jqm-calendar.less";
+@import "panel.less";
 
 .ui-footer-fixed {
   bottom: -2px;
@@ -12,7 +13,8 @@
 }
 
 /* remove border from side menu icon */
-div[data-role='header'] .side-menu-link {
+.ui-page .ui-header .side-menu-link {
+  background: none;
   border: none;
 }
 
@@ -332,6 +334,13 @@ img.icon {
 
 /* ######## Profil ######## */
 
+#profile.index {
+  .avatar-normal {
+    max-width: 250px;
+  }
+}
+
+
 img.contact {
   width: 150px;
 }
@@ -345,16 +354,17 @@ img.contact {
 /* Actitivities */
 
 #activities.ui-listview .ui-li-icon {
-  top: 1.3em;
+  top: 3em;
 }
 
 .activity-avatar {
-  padding-top: 20px;
+  vertical-align: middle;
 }
 
 #activities .author {
   font-style: italic;
   line-height: 16px;
+  margin-top: 0;
 }
 
 .a_bit_smaller_text{

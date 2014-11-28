@@ -1,4 +1,8 @@
-jQuery(document).on('pagehide', 'div', function (event, ui) {
+jQuery(function($) {
+    $("#leftpanel").panel().enhanceWithin();
+});
+
+jQuery(document).on('pagecontainerhide', 'div', function (event, ui) {
     var page = jQuery(event.target);
 
     if (page.attr('data-cache') === 'never'){

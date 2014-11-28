@@ -8,8 +8,7 @@ $page_title = $title;
                           array('activities' => $activities)) ?>
 
 <? if (is_finite($days)) : ?>
-  <a class=quickdial-more-activities
-     data-role="button"
+  <a class="ui-btn quickdial-more-activities"
      href="<?= $controller->url_for('activities', array('days' => is_finite($nextInterval) ? $nextInterval : -1)) ?>">
     Mehr
   </a>

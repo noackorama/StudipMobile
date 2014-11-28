@@ -3,7 +3,7 @@ helpers = require './helpers.coffee'
 template = _.template """
     <% time = timeString === "00:00-23:59" ? timeString : "ganztägig" %>
 
-    <a href=#popup-<%- event.id %> data-icon=info data-rel=popup>
+    <a href=#popup-<%- event.id %> data-rel=popup class=ui-icon-info>
       <span class=time><%= time %></span> <%- summary %>
     </a>
 
@@ -43,13 +43,12 @@ template = _.template """
       </dl>
 
       <% if (event.sem_id) { %>
-        <a data-role=button data-mini=true href="<%- helpers.url_for("courses/show/" + event.sem_id) %>">
+        <a class="ui-btn ui-mini" href="<%- helpers.url_for("courses/show/" + event.sem_id) %>" role=button>
           Zur Veranstaltung
         </a>
       <% } %>
 
-      <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Schließen</a>
-
+      <a href="#" data-rel="back" class="ui-btn-right ui-link ui-btn ui-btn-b ui-icon-delete ui-btn-icon-notext ui-shadow ui-corner-all" role="button">Schließen</a>
     </div
      """
 

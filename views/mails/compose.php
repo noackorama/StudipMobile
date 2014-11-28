@@ -20,11 +20,12 @@ STUDIP.Mobile.bootstraps.contacts = <?= $contacts ? json_encode($contacts) : 'nu
 
       <? if (sizeof($contacts)) : ?>
           <div id=show-contacts>
-              <a href="#mail-show-contacts" data-role=button
+              <a href="#mail-show-contacts"
+                 class="ui-btn ui-icon-plus ui-mini ui-btn-icon-notext ui-corner-all"
+                 role=button
                  data-rel=popup
                  data-transition=slideup
-                 data-shadow="false"
-                 data-icon=plus data-mini=true data-iconpos=notext>Ihre Kontakte</a>
+                 data-shadow="false">Ihre Kontakte</a>
           </div>
       <? endif ?>
 
@@ -33,7 +34,7 @@ STUDIP.Mobile.bootstraps.contacts = <?= $contacts ? json_encode($contacts) : 'nu
         Empfänger: <span class=required>*</span>
       </label>
 
-      <ul id=rec-list "class=selected data-role=listview data-inset=false data-icon=minus></ul>
+      <ul id=rec-list class=selected data-role=listview data-inset=false data-icon=minus></ul>
     </div>
 
     <input id=rec-search type=search data-clear-btn=true

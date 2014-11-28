@@ -35,7 +35,7 @@ $desktop_url = URLHelper::getLink($GLOBALS['ABSOLUTE_URI_STUDIP'], array(StudipM
 
       <input type="submit" value="Login">
     </form>
-    <a href="<?= $desktop_url ?>" data-role="button" class="externallink" data-ajax="false" data-theme="e">Zur Webansicht</a>
+    <a href="<?= $desktop_url ?>" class="ui-btn ui-btn-e externallink" data-ajax="false">Zur Webansicht</a>
   </div><!-- /content -->
 
 </div>

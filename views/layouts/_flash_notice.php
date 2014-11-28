@@ -5,7 +5,7 @@
   </div>
 
   <script>
-   $(document).one("pageshow", function() {
+   $(document).one("pagecontainershow", function() {
      var notice = $("#popup-flash-notice");
      if (!notice.length) return;
      setTimeout(function () {

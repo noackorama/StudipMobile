@@ -6,11 +6,6 @@ require_once $this->trails_root .'/lib/delegating_php_template.php';
 require_once $this->trails_root .'/helpers/format.php';
 require_once $this->trails_root .'/helpers/jqm.php';
 
-define("TOOLBAR_THEME",         "a");
-define("TOOLBAR_BUTTONS",       "c");
-define("TOOLBAR_ABORT",         "e");
-define("STANDARD_DIVIDER",      "a");
-
 /**
  *    global usefull stuff
  *    @author Marcus Lunzenauer - mlunzena@uos.de

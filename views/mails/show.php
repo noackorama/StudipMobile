@@ -8,7 +8,7 @@ $system_mail = $mail['sender_id'] === '____%system%____';
 ?>
 
 <div class="message-menu">
-  <a data-role=button data-mini="true" data-iconpos=notext data-icon=gear href="#mail-panel">Menu</a>
+  <a class="ui-btn ui-mini ui-btn-icon-notext ui-icon-gear ui-corner-all" role=button href="#mail-panel">Menu</a>
 </div>
 
 <ul class="message-details" data-role="listview">

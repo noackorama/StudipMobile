@@ -17,7 +17,7 @@
       <? if ($mail['author_id'] == '____%system%____') : ?>
         <button disabled>Antworten</button>
       <? else : ?>
-        <a data-role=button
+        <a class="ui-btn" role=button
            href="<?= $controller->url_for("mails/compose") ?>?in_reply_to=<?= $mail['message_id'] ?>">
           Antworten
         </a>
@@ -37,8 +37,8 @@
       <h3 class="ui-title">Möchten Sie diese Nachricht löschen?</h3>
 
       <div data-role="controlgroup" data-type="horizontal">
-        <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="c" data-corners=false>Abbrechen</a>
-        <a href="#" data-role="button" data-inline="true" data-theme="b" data-corners=false class=confirm>Löschen</a>
+        <a href="#" class="ui-btn ui-btn-c" role="button" data-inline="true" data-rel="back" data-corners=false>Abbrechen</a>
+        <a href="#" class="ui-btn ui-btn-b confirm" role="button" data-inline="true" data-corners=false>Löschen</a>
       </div>
     </div>
   </div>
