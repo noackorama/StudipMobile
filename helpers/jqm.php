@@ -39,11 +39,4 @@ class JQMHelper {
     {
         $template->additional_footer .= $template->render_partial($page, $options);
     }
-
-    function addCourseHeader($template, $format_string, $course)
-    {
-        $course_type = studip_utf8encode($GLOBALS['SEM_TYPE'][$course->status]['name']);
-        $template->page_title = sprintf($format_string, $course_type);
-        self::addHeader($template, "layouts/_header_course");
-    }
 }
