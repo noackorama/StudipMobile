@@ -1,4 +1,4 @@
-<li data-role="list-divider">Als Nächstes</li>
+<li data-role="list-divider" data-theme="b">Als Nächstes</li>
 
 <? foreach($next_courses as $date) { ?>
 
