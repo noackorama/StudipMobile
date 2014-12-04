@@ -38,7 +38,7 @@ STUDIP.Mobile.bootstraps.contacts = <?= $contacts ? json_encode($contacts) : 'nu
     </div>
 
     <input id=rec-search type=search data-clear-btn=true
-           data-corners=false placeholder="Empfängersuche">
+           placeholder="Empfängersuche">
   </li>
 
   <li class=subject>

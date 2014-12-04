@@ -16,6 +16,8 @@
 
     <script src="<?= $plugin_path ?>/public/vendor/underscore/underscore-min.js"></script>
     <script src="<?= $plugin_path ?>/public/vendor/jquery/jquery-1.9.1.min.js"></script>
+
+    <script src="<?= $plugin_path ?>/public/javascripts/jqm-config.js"></script>
     <script src="<?= $plugin_path ?>/public/vendor/jquery.mobile.1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
     <script src="//maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>

@@ -4,15 +4,15 @@ $show_filter = sizeof($contacts) > 4;
 
 <div data-role="popup" id=mail-show-contacts data-theme="c" style="max-width:400px;">
 
-  <div data-role="header" class="ui-corner-top" data-theme="e">
+  <div data-role="header" data-theme="e">
     <h1>Kontakte auswählen?</h1>
   </div>
 
-  <div class="ui-corner-bottom ui-content">
+  <div class="ui-content">
 
     <div class="buttons" data-role=controlgroup data-type=horizontal>
-      <button class="ui-btn ui-btn-b select">Auswählen</button>
-      <a class="ui-btn" role=button href="#mail-compose" data-rel=back>Abbrechen</a>
+      <button class="ui-btn ui-btn-b select ui-mini">Auswählen</button>
+      <a class="ui-btn ui-mini" role=button href="#mail-compose" data-rel=back>Abbrechen</a>
     </div>
 
     <? if ($show_filter) : ?>

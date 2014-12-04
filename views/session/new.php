@@ -40,7 +40,7 @@ $desktop_url = URLHelper::getLink($GLOBALS['ABSOLUTE_URI_STUDIP'], array(StudipM
         </div>
 
         <input class="ui-btn" role="button" name="submit" type="submit"
-               value="Login" data-corners="false" data-theme="b">
+               value="Login" data-theme="b">
     </form>
 
 </div>

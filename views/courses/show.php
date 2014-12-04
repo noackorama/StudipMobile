@@ -45,18 +45,18 @@ $resources_locations = array_filter($resources, function ($resource) {
 <fieldset class="ui-grid-a">
 
   <div class="ui-block-a">
-    <a class="ui-btn" href="<?= $controller->url_for("courses/show_activities", $course->id) ?>"data-corners=false role=button>Aktivitäten</a>
+    <a class="ui-btn" href="<?= $controller->url_for("courses/show_activities", $course->id) ?>" role=button>Aktivitäten</a>
   </div>
 
   <div class="ui-block-b">
-    <a class="ui-btn" href="<?= $controller->url_for("courses/show_news", $course->id) ?>"data-corners=false role=button>News</a>
+    <a class="ui-btn" href="<?= $controller->url_for("courses/show_news", $course->id) ?>" role=button>News</a>
   </div>
 
   <div class="ui-block-a">
-    <a class="ui-btn" href="<?= $controller->url_for("courses/list_files", $course->id) ?>"data-corners=false role=button>Dateien</a>
+    <a class="ui-btn" href="<?= $controller->url_for("courses/list_files", $course->id) ?>" role=button>Dateien</a>
   </div>
 
   <div class="ui-block-b">
-    <a class="ui-btn" href="<?= $controller->url_for("courses/show_members", $course->id) ?>" data-corners=false role=button>Teilnehmer</a>
+    <a class="ui-btn" href="<?= $controller->url_for("courses/show_members", $course->id) ?>" role=button>Teilnehmer</a>
   </div>
 </fieldset>

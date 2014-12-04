@@ -30,15 +30,15 @@
 
 
   <div data-role="popup" id="popup-message-delete" data-overlay-theme="a" data-theme="c">
-    <div data-role="header" data-theme="a" class="ui-corner-top">
+    <div data-role="header" data-theme="a">
       <h1>Nachricht löschen?</h1>
     </div>
-    <div data-theme="d" class="ui-corner-bottom ui-content">
+    <div data-theme="d" class="ui-content">
       <h3 class="ui-title">Möchten Sie diese Nachricht löschen?</h3>
 
       <div data-role="controlgroup" data-type="horizontal">
-        <a href="#" class="ui-btn ui-btn-c" role="button" data-inline="true" data-rel="back" data-corners=false>Abbrechen</a>
-        <a href="#" class="ui-btn ui-btn-b confirm" role="button" data-inline="true" data-corners=false>Löschen</a>
+        <a href="#" class="ui-btn ui-btn-c" role="button" data-inline="true" data-rel="back">Abbrechen</a>
+        <a href="#" class="ui-btn ui-btn-b confirm" role="button" data-inline="true">Löschen</a>
       </div>
     </div>
   </div>

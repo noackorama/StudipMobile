@@ -48,7 +48,7 @@ template = _.template """
         </a>
       <% } %>
 
-      <a href="#" data-rel="back" class="ui-btn-right ui-link ui-btn ui-btn-b ui-icon-delete ui-btn-icon-notext ui-shadow ui-corner-all" role="button">Schließen</a>
+      <a href="#" data-rel="back" class="ui-btn-right ui-link ui-btn ui-btn-b ui-icon-delete ui-btn-icon-notext ui-shadow" role="button">Schließen</a>
     </div
      """
 
