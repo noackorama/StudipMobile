@@ -21,8 +21,9 @@
     <script src="<?= $plugin_path ?>/public/vendor/jquery.mobile.1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
     <script src="//maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+<!--
     <script src="<?= $plugin_path ?>/public/vendor/map/jquery.ui.map.full.min.js" type="text/javascript"></script>
-
+ -->
     <script src="<?= $plugin_path ?>/public/vendor/date/date.js"></script>
 
     <script>
