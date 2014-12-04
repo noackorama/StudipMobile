@@ -10,16 +10,11 @@ require dirname(__FILE__) . "/../models/calendar.php";
  */
 class CalendarController extends AuthenticatedController
 {
-    function index_action($weekday = NULL)
+    function index_action()
     {
-        // if no weekday -> make one
-        if ($weekday == NULL) {
-            $weekday = date("N");
-        }
-        //give weekday to the view
-        $this->weekday = $weekday;
-        //get events for current weekday
-        $this->termine = CalendarModel::getDayDates($this->currentUser(), $weekday);
+        $semdata = new \SemesterData();
+        $this->current_semester = $semdata->getCurrentSemesterData();
+        $this->termine = CalendarModel::getDayDates($this->currentUser(), $this->current_semester);
     }
 
     function kalender_action($year = NULL, $month = NULL)

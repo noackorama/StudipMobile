@@ -8,14 +8,9 @@ require_once(  $GLOBALS['RELATIVE_PATH_CALENDAR'] . "/lib/DbCalendarMonth.class.
 
 class CalendarModel {
 
-    static function getDayDates($user, $weekday)
+    static function getDayDates($user, $current_semester)
     {
-        //get current semester
-        $semdata = new \SemesterData();
-        $current_semester = $semdata->getCurrentSemesterData();
-        $current_semester_id = $current_semester['semester_id'];
-
-        return \CalendarScheduleModel::getEntries($user->id, $current_semester, 0800, 2000, array($weekday-1), false);
+        return \CalendarScheduleModel::getEntries($user->id, $current_semester, 0800, 2000, range(0, 6), false);
     }
 
     static function getCalendar($user, $start, $end)

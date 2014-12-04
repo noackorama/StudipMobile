@@ -1,78 +1,79 @@
 <?
-$page_id = "timetable";
-$page_title = "Planer";
-$body_class = "calendar";
-$additional_header = $this->render_partial('calendar/_navbar', array('active' => 'index'));
-$this->set_layout("layouts/single_page");
+$page_title = sprintf('Stundenplan im  %s', $this->out($current_semester['name']));
+$this->setPageOptions('calendar-planer', $page_title);
+$additional_footer = $this->render_partial('calendar/_navbar_footer', array('active' => 'index'));
 
-$month = date("n");
-$day = date("j");
-$year = date("Y");
+$current_weekday = date('N') - 1;
 ?>
 
-<div class="calendar_year"><?=\Studip\Mobile\Helper::get_weekday($weekday) ?></div>
+<div data-role="tabs" id="tabs" data-active="<?= ($current_weekday) ?>">
 
-<table border=0 cellspacing=0 class="calendar_month">
-  <tr>
-    <td class="<?= $weekday == 1 ? "calendar_month_activ":"calendar_month_inactive" ?>" onclick="location.href='<?= $controller->url_for("calendar/index", "1") ?>'">MON</td>
-    <td class="<?= $weekday == 2 ? "calendar_month_activ":"calendar_month_inactive" ?>" onclick="location.href='<?= $controller->url_for("calendar/index", "2") ?>'">DIE</td>
-    <td class="<?= $weekday == 3 ? "calendar_month_activ":"calendar_month_inactive" ?>" onclick="location.href='<?= $controller->url_for("calendar/index", "3") ?>'">MIT</td>
-    <td class="<?= $weekday == 4 ? "calendar_month_activ":"calendar_month_inactive" ?>" onclick="location.href='<?= $controller->url_for("calendar/index", "4") ?>'">DON</td>
-    <td class="<?= $weekday == 5 ? "calendar_month_activ":"calendar_month_inactive" ?>" onclick="location.href='<?= $controller->url_for("calendar/index", "5") ?>'">FRE</td>
-    <td class="<?= $weekday == 6 ? "calendar_month_activ":"calendar_month_inactive" ?>" onclick="location.href='<?= $controller->url_for("calendar/index", "6") ?>'">SAM</td>
-  </tr>
-</table>
+    <ul class="weekdays" data-role="listview" data-inset="false">
+        <? foreach ($termine as $key => $dates): ?>
+            <li class="<?= $key == $current_weekday ? 'ui-tabs-active' : '' ?>">
+                <a href="#weekday-<?= $key ?>" data-ajax="false">
+                    <?= substr($dates->getTitle(), 0, 2) ?>
 
-<div style="width:100%;height:20px;"></div>
-
-<?
-$no_entries = true;
-
-if (array_key_exists(($weekday-1), $termine)) {
-
-    ?>
-   <ul data-role=listview>
-   <?
-
-    if (array_key_exists("entries", $termine[$weekday-1])) {
-        $calendar_col = $termine[$weekday-1];
-
-        $array= $calendar_col->sortEntries();
-        if (array_key_exists("col_0", $array)) {
-            foreach ($array["col_0"] as $termin ) {
-
-               $termin['start'] = str_pad($termin['start'], 4, "0", STR_PAD_LEFT);
-               $termin['end']   = str_pad($termin['end'], 4, "0", STR_PAD_LEFT);
-
-                if (strlen($termin['id']) >=32) {
-                    $link = $controller->url_for("courses/show", substr($termin['id'],0,32));
-                } ?>
-
-                <li>
-                    <? if ($link) : ?>
-                        <a href="<?= $link ?>">
+                    <? if (array_key_exists('entries', $dates) && sizeof($dates->entries)) : ?>
+                        <span>•</span>
                     <? endif ?>
+                </a>
+            </li>
+        <? endforeach ?>
+    </ul>
 
-                    <div class="date">
-                        <?=substr($termin["start"],0,2) ?>:<?=substr($termin["start"],2,2) ?> -
-                        <?=substr($termin["end"],0,2) ?>:<?=substr($termin["end"],2,2) ?>
-                    </div>
 
-                    <h2><?= $this->out($termin["title"]) ?></h2>
-                    <span class=content><?= $this->out($termin["content"]) ?></span>
+    <? foreach ($termine as $key => $dates): ?>
+        <div id="weekday-<?= $key ?>" class="weekday-content ui-content" data-inset="false">
 
-                    <? if ($link) : ?>
-                        </a>
-                    <? endif ?>
-                </li>
+            <? if (array_key_exists('entries', $dates) && sizeof($dates->entries)) : ?>
                 <?
-            }
-            $no_entries = false;
-        }
-    }
-?></ul><?
-}
+                $entries = $dates->sortEntries();
+                $sorted = array_reduce(
+                    $entries,
+                    function ($memo, $col) {
+                        return array_merge($memo, $col);
+                    },
+                    array());
 
-if ($no_entries == true) { ?>
-    <div class="calendar_bubble">Es sind keine Einträge vorhanden.</div>
-<? } ?>
+                 usort($sorted, function ($a, $b) {
+                    return strcmp($a['start_formatted'], $b['start_formatted']);
+                 });
+                ?>
+                <ul data-role=listview>
+
+                    <? foreach ($sorted as $termin): ?>
+                        <? $link = strlen($termin['id']) >=32
+                                   ? $controller->url_for("courses/show",
+                                                          substr($termin['id'],
+                                                                 0, 32))
+                                   : false  ?>
+                        <li data-theme="d">
+                            <? if ($link) : ?>
+                                <a href="<?= $link ?>">
+                            <? endif ?>
+
+                            <div class="date">
+                                <?= $this->out($termin['start_formatted']) ?> - <?= $this->out($termin['end_formatted']) ?>
+                            </div>
+
+                            <h2><?= $this->out($termin['title']) ?></h2>
+                            <span class=content><?= $this->out($termin['content']) ?></span>
+
+                            <? if ($link) : ?>
+                                </a>
+                            <? endif ?>
+
+                    <? endforeach ?>
+                </ul>
+            <? else : ?>
+
+                <!-- TODO -->
+                <div class="calendar_bubble">Es sind keine Einträge vorhanden.</div>
+
+            <? endif ?>
+
+        </div>
+    <? endforeach ?>
+
+</div>
