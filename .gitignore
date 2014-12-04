@@ -1,5 +1,5 @@
 .DS_Store
 /nbproject
 /node_modules
-*.js
-*.css
+public/javascripts/bundle/*.js
+public/stylesheets/*.css
