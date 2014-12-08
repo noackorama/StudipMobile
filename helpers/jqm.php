@@ -39,4 +39,16 @@ class JQMHelper {
     {
         $template->additional_footer .= $template->render_partial($page, $options);
     }
+
+    function debug($template, $variable)
+    {
+?>
+    <div data-role="collapsible" data-inset="false">
+        <h3>Debug:</h3>
+        <textarea>
+            <?= $this->out(var_dump($variable)) ?>
+        </textarea>
+    </div>
+<?
+    }
 }
