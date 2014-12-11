@@ -308,7 +308,7 @@ class Activity {
         $module_slots = words('forum documents scm wiki');
 
         foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $seminar) {
-            $sem_class = $GLOBALS['SEM_CLASS'][$GLOBALS['SEM_TYPE'][$seminar['status']]["class"]];
+            $sem_class = $GLOBALS['SEM_CLASS'][$GLOBALS['SEM_TYPE'][$seminar['status']]["class"]] ?: \SemClass::getDefaultSemClass();
             foreach ($module_slots as $slot) {
                 $module = $sem_class->getModule($slot);
                 $items = array_merge($items, self::getNotificationObjects($sem_class, $module, $slot, $seminar['Seminar_id'], $chdate, $user_id));
@@ -375,7 +375,7 @@ class Activity {
             }
         }
 
-        return $items;
+        return studip_utf8decode($items);
     }
 
     const SMART_ACTIVITIES_THRESHOLD = 3;
