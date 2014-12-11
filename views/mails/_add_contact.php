@@ -33,7 +33,7 @@ $show_filter = sizeof($contacts) > 4;
             <fieldset data-role=controlgroup data-iconpos=left>
               <input type=checkbox id=checkbox-<?= $contact['id'] ?> data-id=<?= $contact['id'] ?>>
               <label for=checkbox-<?= $contact['id'] ?>>
-                <img src="<?= $contact['avatar'] ?>">
+                <img src="<?= $contact['img'] ?>">
                 <?= $this->out($contact['name']) ?>
               </label>
             </fieldset>
