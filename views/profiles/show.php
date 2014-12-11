@@ -1,9 +1,9 @@
 <?
-$profile_name = join(' ', array(
+$profile_name = $this->out(join(' ', array(
     $data['user_data']['title_front'],
     $data['user_data']['vorname'],
     $data['user_data']['nachname']
-));
+)));
 $this->setPageOptions('profile-index', $profile_name ?: 'Profil');
 
 require_once('lib/user_visible.inc.php');

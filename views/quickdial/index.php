@@ -1,5 +1,5 @@
 <?
-$page_title = Studip\Mobile\Helper::out($GLOBALS['UNI_NAME_CLEAN']);
+$page_title = $this->out($GLOBALS['UNI_NAME_CLEAN']);
 $page_id = "quickdial-index";
 $this->set_layout("layouts/single_page");
 ?>

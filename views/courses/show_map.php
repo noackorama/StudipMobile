@@ -1,4 +1,5 @@
 <?
+# TODO: use new layout
 $this->set_layout("layouts/base");
 
 // orte ohne geoinfo nicht anzeigen
@@ -54,7 +55,7 @@ foreach ($resources AS $reso) {
               'bounds': false
             }).click(function() {
               $('#map_canvas').gmap('openInfoWindow', {
-                'content': '<span style="font-weight:bold"><?=Studip\Mobile\Helper::out($resource[name]) ?></span><br><span style="font-weight:normal;"><?=Studip\Mobile\Helper::out($resource[description]) ?></span'
+                'content': '<span style="font-weight:bold"><?= $this->out($resource[name]) ?></span><br><span style="font-weight:normal;"><?= $this->out($resource[description]) ?></span'
               }, this);
             });
             <? } ?>
@@ -64,7 +65,7 @@ foreach ($resources AS $reso) {
 
     </script>
 
-    <div class="ui-bar-c ui-corner-all ui-shadow" style="margin-top:0em;">
+    <div class="ui-bar-c ui-shadow" style="margin-top:0em;">
       <div id="map_canvas" style="height:335px;"></div>
     </div>
 

@@ -1,7 +1,5 @@
 <?
-$this->set_layout("layouts/single_page");
-$page_title = "Veranstaltungen";
-$page_id = "courses-index";
+$this->setPageOptions('courses-index', 'Veranstaltungen');
 ?>
 
 <? if (sizeof($courses)) : ?>

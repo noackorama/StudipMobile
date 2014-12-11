@@ -4,7 +4,7 @@
       <a href="<?= $controller->url_for("courses/show", $course->id) ?>"
          class="ui-btn-active"
          data-icon=back>
-        <?= Studip\Mobile\Helper::out($course->name) ?>
+        <?= $this->out($course->name) ?>
       </a>
     </li>
   </ul>

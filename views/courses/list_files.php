@@ -45,11 +45,11 @@ $show_filter = sizeof($files) > 4;
         <a href="<?= $file["link"] ?>" class="externallink" data-ajax="false">
           <img src="<?=$plugin_path ?><?=$file["icon_link"] ?>" class="ui-li-icon">
             <h2 class="<?= $new_content ? 'new-content' : '' ?>">
-              <?= Studip\Mobile\Helper::out($file["name"]) ?>
+              <?= $this->out($file["name"]) ?>
               <span class=file-size><?= $filesize ?></span>
             </h2>
             <? if (trim($file["description"]) !== '') : ?>
-              <p><?= Studip\Mobile\Helper::out($file["description"]) ?></p>
+              <p><?= $this->out($file["description"]) ?></p>
             <? endif ?>
         </a>
 

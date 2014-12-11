@@ -9,7 +9,7 @@ $_dataAttributes['theme'] = $_dataAttributes['theme'] ?: 'c';
      foreach ($_dataAttributes as $key => $value) {
          if ($value !== false) {
              printf(' data-%s="%s"', $key,
-                    Studip\Mobile\Helper::out($value));
+                    $this->out($value));
          }
      }
      ?>

@@ -26,7 +26,7 @@ $show_filter = sizeof($courses) > 4;
 
   <? foreach ($groups as $sem_key => $group) { ?>
     <li data-role="list-divider">
-      <?= Studip\Mobile\Helper::out($semester[$sem_key]['name']) ?>
+      <?= $this->out($semester[$sem_key]['name']) ?>
     </li>
     <? foreach ($group as $course) { ?>
       <?= $this->render_partial("courses/_list_item", compact("course")) ?>
