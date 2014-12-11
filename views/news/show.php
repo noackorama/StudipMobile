@@ -31,12 +31,10 @@ else {
   </li>
 
   <? if (!$single_course): ?>
-      <li class=collapsible-listitem>
-          <div class="ui-mini" data-role="collapsible" data-inset=false>
-              <h6>in <?= sizeof($ranges) ?> Bereichen</h6>
-              <div>
-                  <?= $this->render_partial('news/_ranges') ?>
-              </div>
+      <li class="ui-mini" data-role="collapsible" data-iconpos="right" data-inset="false">
+          <h6>in <?= sizeof($ranges) ?> Bereichen</h6>
+          <div>
+              <?= $this->render_partial('news/_ranges') ?>
           </div>
       </li>
   </li>
