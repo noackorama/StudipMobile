@@ -4,25 +4,6 @@ namespace Studip\Mobile;
 
 class Helper {
 
-
-    // Comparison function
-    static function cmpEarlier($a, $b)
-    {
-        if (!isset($a["start"])) {
-            return -1;
-        }
-
-        if (!isset($b["start"])) {
-            return 1;
-        }
-
-        if ($a["start"] == $b["start"]) {
-            return 0;
-        }
-
-        return ($a["start"] < $b["start"]) ? -1 : 1;
-    }
-
     static function getLastMidnight($time = null)
     {
 
@@ -51,12 +32,6 @@ class Helper {
     static function formatDate($date, $with_time = true)
     {
         return self::get_weekday(date("N", $date)) . date(" j. ", $date) . self::get_month(date("m", $date)) . ($with_time ? date(" Y H:i", $date) : '');
-    }
-
-    static function stamp_to_dat($timestamp)
-    {
-        $date = date("j.m.Y", $timestamp);
-        return $date;
     }
 
     static function get_weekday($day)
@@ -148,135 +123,6 @@ class Helper {
     public static function url_to_link($text)
     {
         return preg_replace("#(https?|ftp)://\S+[^\s.,>)\];'\"!?]#", '<a href="\\0">\\0</a>', $text);
-    }
-
-    static function colourBrightness($hex, $percent)
-    {
-        // Work out if hash given
-        $hash = '';
-        if (stristr($hex,'#')) {
-            $hex = str_replace('#','',$hex);
-            $hash = '#';
-        }
-
-        /// HEX TO RGB
-        $rgb = array(hexdec(substr($hex,0,2)), hexdec(substr($hex,2,2)), hexdec(substr($hex,4,2)));
-
-        //// CALCULATE
-        for ($i = 0; $i < 3; $i++) {
-            // See if brighter or darker
-            if ($percent > 0) {
-                // Lighter
-                $rgb[$i] = round($rgb[$i] * $percent) + round(255 * (1-$percent));
-            } else {
-                // Darker
-                $positivePercent = $percent - ($percent*2);
-                $rgb[$i] = round($rgb[$i] * $positivePercent) + round(0 * (1-$positivePercent));
-            }
-            // In case rounding up causes us to go to 256
-            if ($rgb[$i] > 255) {
-                $rgb[$i] = 255;
-            }
-        }
-
-        //// RBG to Hex
-        $hex = '';
-        for ($i = 0; $i < 3; $i++) {
-            // Convert the decimal digit to hex
-            $hexDigit = dechex($rgb[$i]);
-            // Add a leading zero if necessary
-            if (strlen($hexDigit) == 1) {
-                $hexDigit = "0" . $hexDigit;
-            }
-            // Append to the hex string
-            $hex .= $hexDigit;
-        }
-        return $hash . $hex;
-    }
-
-
-    // TODO (mlunzena): this is no model code...
-    static function getColorball($color, $size = 15, $noColor = false)
-    {
-        if ($noColor) {
-            echo '<div style="
-                            width:'.$size.'px;
-                            height:'.$size.'px;
-                            position:relative;
-                            top:10px;
-                            margin-right:15px;
-                            float:left;"></div>
-                            ';
-        } else {
-            $color2 = htmlReady($color);
-            $color1 = Helper::colourBrightness(htmlReady($color) , 0.4);
-            echo '<div style="
-                            background-color:'.$color1.';
-                            width:'.$size.'px;
-                            height:'.$size.'px;
-                            position:relative;
-                            top:10px;
-                            margin-right:15px;
-                            float:left;
-                            -webkit-border-radius: 20px;border-radius: 20px;background-image: linear-gradient(left top, '.$color1.' 25%,  '.$color2.' 75%);
-                            background-image: -o-linear-gradient(left top, '.$color1.' 25%,  '.$color2.' 75%);
-                            background-image: -moz-linear-gradient(left top, '.$color1.' 25%,  '.$color2.' 75%);
-                            background-image: -webkit-linear-gradient(left top, '.$color1.' 25%,  '.$color2.' 75%);
-                            background-image: -ms-linear-gradient(left top, '.$color1.' 25%,  '.$color2.' 75%);
-                            background-image: -webkit-gradient(
-                                linear,
-                                left top,
-                                right bottom,
-                                color-stop(0.3, '.$color1.'),
-                                color-stop(0.75, '.$color2.')
-                            );"></div>
-                            ';
-        }
-    }
-
-    static function filenameReplaceBadChars($filename)
-    {
-
-        $patterns = array(
-            "/\\s/",  // Leerzeichen
-            "/\\&/",  // Kaufmaennisches UND
-            "/\\+/",  // Plus-Zeichen
-            "/\\</",  // < Zeichen
-            "/\\>/",  // > Zeichen
-            "/\\?/",  // ? Zeichen
-            "/\"/",   // " Zeichen
-            "/\\:/",  // : Zeichen
-            "/\\|/",  // | Zeichen
-            "/\\\\/", // \ Zeichen
-            "/ä/",
-            "/ö/",
-            "/ü/",
-            "/Ä/",
-            "/Ö/",
-            "/Ü/",
-            "/\\*/"   // * Zeichen
-        );
-
-        $replacements = array(
-            " ",
-            "-",
-            "-",
-            "_",
-            "_",
-            "_",
-            "_",
-            " ",
-            "\\s",
-            "_",
-            "ae",
-            "oe",
-            "ue",
-            "Ae",
-            "Oe",
-            "Ue",
-            "_",
-        );
-        return preg_replace($patterns, $replacements, $filename);
     }
 
     //filters a string so thats ist vaild for filenames and pathes, slashes are not filterd
