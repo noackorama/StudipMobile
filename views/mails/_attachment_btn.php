@@ -1,11 +1,9 @@
 <a href="<?= GetDownloadLink($attachment_id, $filename, 0,'force_download') ?>"
-   class=externallink
+   class="externallink ui-btn ui-icon-arrow-r ui-btn-icon-left ui-mini"
    data-ajax=false
-   data-role=button
-   data-mini=true
+   <? if ($as_button) : ?>
+   role=button
    data-inline=true
-   data-icon=arrow-r
-   data-iconpos=left>
-
+   <? endif ?>>
   <?= \Studip\Mobile\Helper::out($filename) ?>
 </a>

@@ -3,6 +3,8 @@ namespace Studip\Mobile;
 
 require "StudipMobileAuthenticatedController.php";
 require dirname(__FILE__) . "/../models/course.php";
+require dirname(__FILE__) . "/../models/activity.php";
+require dirname(__FILE__) . "/../models/news.php";
 
 /**
  *    get the courses and all combined stuff, like files and
@@ -22,15 +24,8 @@ class CoursesController extends AuthenticatedController
     function list_files_action($id = NULL)
     {
         // is the user in the course?
-        $this->course = Course::find($id);
+        $this->requireCourse($id);
 
-        if (!Course::isReadable($id, $this->currentUser()->id)) {
-            throw new \Trails_Exception(403);
-        }
-
-        // give seminarId to the view
-        $this->seminar_id = $id;
-        // get files as array and give it to the view
         $this->files = Course::find_files($id, $this->currentUser()->id);
 
         // mark as visited
@@ -39,19 +34,10 @@ class CoursesController extends AuthenticatedController
 
     function show_action($id = NULL)
     {
-        // get specific course
-        $this->course = Course::find($id);
+        $this->requireCourse($id);
+
         // get specific ressources for the course
         $this->resources = Course::getResources($this->course);
-
-        //exception if course is not readable
-        if (!$this->course) {
-            throw new \Trails_Exception(404);
-        }
-
-        if (!Course::isReadable($id, $this->currentUser()->id)) {
-            throw new \Trails_Exception(403);
-        }
 
         $this->next_dates = array();
         $termine = \SeminarDB::getNextDate($id);
@@ -63,27 +49,27 @@ class CoursesController extends AuthenticatedController
         }
     }
 
-    function show_map_action($id)
+    function show_map_action($id = NULL)
     {
-        // get specific course object
-        $this->course = Course::find($id);
+        $this->requireCourse($id);
+
         // get destinations of the course
         $this->resources = Course::getResources($this->course);
-
-        if (!Course::isReadable($id, $this->currentUser()->id)) {
-            throw new \Trails_Exception(403);
-        }
     }
 
-    function dropfiles_action( $id = NULL )
+    function show_activities_action($id = NULL)
     {
+        $this->requireCourse($id);
+
+        list($this->days, $this->activities) = Activity::getSmartActivities($this->currentUser(), $this->course);
+    }
+
+    function dropfiles_action($id = NULL)
+    {
+        $this->requireCourse($id);
 
         if (!StudipMobile::DROPBOX_ENABLED) {
             throw new \Trails_Exception(400);
-        }
-
-        if (!Course::isReadable($id, $this->currentUser()->id)) {
-            throw new \Trails_Exception(403);
         }
 
         //generate the callbacklink
@@ -103,7 +89,7 @@ class CoursesController extends AuthenticatedController
      *  this controller function is called by the view via ajax
      *  the user should be connected to dropbox
      */
-    function upload_action( $fileid )
+    function upload_action($fileid)
     {
         if (!\StudipMobile::DROPBOX_ENABLED) {
             throw new \Trails_Exception(400);
@@ -134,18 +120,30 @@ class CoursesController extends AuthenticatedController
     /*
      *  give an array width all members to the view
      */
-    function show_members_action($semId)
+    function show_members_action($id = NULL)
     {
-        if (!Course::isReadable($semId, $this->currentUser()->id)) {
-            throw new \Trails_Exception(403);
-        }
-        $this->course = Course::find($semId);
+        $this->requireCourse($id);
 
-        $count = $this->course->countMembers($semId);
+        $count = $this->course->countMembers($id);
 
         if (\Request::submitted("deep") || $count <= self::MEMBER_THRESHOLD) {
-            $this->members = Course::getMembers($semId);
+            $this->members = Course::getMembers($id);
         }
+    }
+
+    /*
+     * show the news of a course
+     */
+    function show_news_action($id = NULL)
+    {
+        $this->requireCourse($id);
+
+        $this->news = News::findForCourse($this->currentUser(), $this->course);
+        /*
+        if ($this->news === false) {
+            $this->error(401);
+        }
+        */
     }
 
     /*
@@ -167,5 +165,20 @@ class CoursesController extends AuthenticatedController
         $this->user_id          = $this->currentUser()->id;
         $this->courses          = Course::findAllByUser($this->currentUser()->id);
         $this->dropCom          = Course::connectToDropbox( $this->currentUser()->id, $call_back_link );
+    }
+
+    private function requireCourse($id)
+    {
+        // get specific course
+        $this->course = Course::find($id);
+
+        //exception if course is not readable
+        if (!$this->course) {
+            throw new \Trails_Exception(404);
+        }
+
+        if (!Course::isReadable($id, $this->currentUser()->id)) {
+            throw new \Trails_Exception(403);
+        }
     }
 }

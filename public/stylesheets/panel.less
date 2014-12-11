@@ -1,0 +1,26 @@
+@media ( min-width: 35em ) {
+  .ui-panel-page-content-open {
+    width: auto;
+
+    // wrap on wide viewports once open
+    &.ui-panel-page-content-position-left,
+    &.ui-panel-page-content-position-right {
+      margin-right: 17em;
+    }
+
+    // same as the above but for panels with display mode "push" only
+    &.ui-panel-page-content-position-left.ui-panel-page-content-display-push,
+    &.ui-panel-page-content-position-right.ui-panel-page-content-display-push {
+      margin-right: 17em;
+    }
+    &.ui-panel-page-content-display-push {
+      width: auto;
+    }
+  }
+
+  // disable "dismiss" on wide viewports
+  .ui-panel-dismiss,
+  .ui-panel-dismiss-display-push {
+    display: none;
+  }
+}

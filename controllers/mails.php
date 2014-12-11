@@ -3,6 +3,7 @@ namespace Studip\Mobile;
 
 require "StudipMobileAuthenticatedController.php";
 require dirname(__FILE__) . "/../models/mail.php";
+require dirname(__FILE__) . "/../models/contact.php";
 
 /**
  *    get th inbox and outbox, write and send mails
@@ -12,92 +13,176 @@ require dirname(__FILE__) . "/../models/mail.php";
  */
 class MailsController extends AuthenticatedController
 {
+
+    function before_filter(&$action, &$args)
+    {
+        parent::before_filter($action, $args);
+
+        if (sizeof($args) === 1 && ($action === 'inbox' || $action === 'outbox')) {
+            $this->is_outbox = $action === 'outbox';
+            $action = 'show';
+        }
+    }
+
     /**
      * lists mails of inbox
      */
-    function index_action($intervall = 0, $delId = null)
+    function inbox_action()
     {
-        //  set intervall for the messages
-        $this->intervall = $intervall;
-        //  if a message should be deleted
-        if ($delId != null) {
-            Mail::deleteMessage( $delId, $this->currentUser()->id);
-        }
         //  get all messages
-        $this->inbox = Mail::findAllByUser($this->currentUser()->id, $intervall, true);
+        $ids = Mail::inbox($this->currentUser());
+        $this->messages = Mail::load($this->currentUser(), $ids);
     }
 
     /**
      * lists mails of outbox
      */
-    function list_outbox_action($intervall = 0, $delId = null )
+    function outbox_action()
     {
-        //  set intervall for the messages
-        $this->intervall = $intervall;
-
-        //  if a message should be deleted
-        if ($delId != null) {
-            Mail::deleteMessage($delId, $this->currentUser()->id);
-        }
         //  get all messages
-        $this->outbox = Mail::findAllByUser($this->currentUser()->id, $intervall, false);
+        $ids = Mail::outbox($this->currentUser());
+        $this->messages = Mail::load($this->currentUser(), $ids);
     }
 
     /**
-     * show a specific message
+     * show a specific received message
      */
-    function show_msg_action($id, $mark = 0)
+    function show_action($id)
     {
-        $this->mail = Mail::findMsgById($this->currentUser()->id, $id, $mark);
+        $this->mail = Mail::load($this->currentUser(), $id);
+        if (!$this->mail) {
+            $this->error(404);
+        }
+
+        Mail::markMail($this->currentUser(), $this->mail, true);
+    }
+
+    function reply_action($id)
+    {
+        $mail = Mail::load($this->currentUser(), $id);
+        if (!$mail) {
+            $this->error(404);
+        }
+
+        $body = \Request::get("reply");
+        $reply = Mail::replyTo($this->currentUser(), $mail, $body);
+
+        if ($reply) {
+            $this->render_json(array('status' => 'ok'));
+        } else {
+            // TODO: figure out real status code
+            $this->error(500);
+        }
+    }
+
+    function status_action($id)
+    {
+        $mail = Mail::load($this->currentUser(), $id);
+        if (!$mail) {
+            $this->error(404);
+        }
+
+        $read = \Request::int('read');
+        if ($read === null) {
+            $this->error(400);
+        }
+
+        Mail::markMail($this->currentUser(), $mail, $read);
+
+        $this->render_json(array('status' => 'ok'));
+    }
+
+
+    function delete_action($msg_id)
+    {
+        if (\Request::method() !== 'DELETE' || !\Request::isXhr()) {
+            $this->error(400);
+        }
+
+        $mail = Mail::load($this->currentUser(), $msg_id);
+        if (!$mail) {
+            $this->error(404);
+        }
+
+        $status = Mail::delete($this->currentUser(), $mail);
+        if ($status) {
+            $this->render_json(array('status' => 'ok'));
+        } else {
+            $this->error(500, 'Could not delete mail.');
+        }
     }
 
     /**
      * preparation for sending a mail
      */
-    function write_action($empf = null)
+    function compose_action()
     {
-        if ($empf == null) {
+        $this->mail = array();
 
-            // $this->members  = Mail::findAllInvolvedMembers( $this->currentUser()->id );
-
-            $stmt = \DBManager::get()->prepare('SELECT user_id FROM contact '.
-            'WHERE owner_id = ?');
-
-            $stmt->execute(array($this->currentUser()->id ));
-            $contacts =  $stmt->fetchAll(\PDO::FETCH_COLUMN, 0);
-
-            if(!empty($contacts)) {
-                $query = "SELECT auth_user_md5.user_id, auth_user_md5.Vorname, auth_user_md5.Nachname, user_info.title_front
-                              FROM   auth_user_md5
-                              JOIN   user_info     ON auth_user_md5.user_id = user_info.user_id
-                              WHERE auth_user_md5.user_id IN (:user_ids)
-                              ORDER BY auth_user_md5.Nachname";
-                $stmt = \DBManager::get()->prepare($query);
-                $stmt->bindParam(':user_ids', $contacts, \StudipPDO::PARAM_ARRAY);
-                $stmt->execute();
-
-                $this->members = $stmt->fetchAll();
-            } else {
-                $this->members = false;
+        if ($msg_id = \Request::option('in_reply_to', false)) {
+            $msg = Mail::load($this->currentUser(), $msg_id);
+            if (!$msg) {
+                $this->error(404);
             }
 
-        } else {
-            $this->empfData = \User::find($empf);
+            $this->mail['recipients'] = array($this->getUser($msg['sender_id']));
+            $this->mail['subject']    = Mail::getReplySubject($msg);
+            $this->mail['message']    = Mail::getQuotedMessage($msg);
         }
+
+        else if ($user_id = \Request::option('to', false)) {
+            if ($user = \User::find($user_id)) {
+                $this->mail['recipients'] = array($this->getUser($user_id));
+            }
+        }
+
+
+        $this->contacts = array_map(
+            function ($contact) {
+                return array(
+                    'id'   => $contact['id'],
+                    'name' => $contact['name'],
+                    'img'  => $contact['avatar']
+                );
+            }, Contact::findAllByUser($this->currentUser()));
     }
 
     /**
      * sends a mail
      */
-    function send_action($empf)
+    function send_action()
     {
-        $betreff     = \Request::get("mail_title");
-        $nachricht   = \Request::get("mail_message");
+        $recipients  = \Request::optionArray('recipients');
+        $betreff     = studip_utf8decode(\Request::get('subject', ''));
+        $nachricht   = studip_utf8decode(\Request::get('message', ''));
 
-        # TODO checken!
-        $this->sendmessage = Mail::send( $empf, $betreff, $nachricht, $this->currentUser()->id );
+        if (!sizeof($recipients)) {
+            $this->error(400, 'Recipients required');
+        }
 
-        $this->flash["notice"] = _("Nachricht verschickt.");
-        $this->redirect("mails");
+        if (!strlen($betreff)) {
+            $this->error(400, 'Subject required');
+        }
+
+        $empf = array_filter(array_map('get_username', $recipients));
+        if (!sizeof($empf)) {
+            $this->error(400, 'Recipient/s required');
+        }
+
+        $sendmessage = Mail::send($empf, $betreff, $nachricht, $this->currentUser()->id);
+        if ($sendmessage) {
+            return $this->render_json(array('status' => 'ok'));
+        }
+
+        $this->error(400);
+    }
+
+    private function getUser($id)
+    {
+        return array(
+            'id'   => $id,
+            'name' => get_fullname($id, 'no_title'),
+            'img'  => \Avatar::getAvatar($id)->getUrl(\Avatar::SMALL)
+        );
     }
 }

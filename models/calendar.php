@@ -8,56 +8,35 @@ require_once(  $GLOBALS['RELATIVE_PATH_CALENDAR'] . "/lib/DbCalendarMonth.class.
 
 class CalendarModel {
 
-    static function getMonthDates($user_id, $timestamp)
+    static function getDayDates($user, $current_semester)
     {
-        $_calendar = \Calendar::getInstance($user_id);
-
-        // hat leserechte : $_calendar->havePermission( 2 )
-        $cal = new \DbCalendarMonth($_calendar, $timestamp, null, \Calendar::getBindSeminare($user_id) );
-
-        $start_stamp = $cal->getStart() + 0.5 * 86400;
-        $end_stamp   = $cal->getEnd();
-        $monthDates  =  array();
-
-        for ($act_stamp = $start_stamp; $act_stamp < $end_stamp; $act_stamp += 86400) {
-            $event = $cal->getEventsOfDay($act_stamp);
-
-            $dates = array();
-
-            if (isset($event)) {
-
-                foreach ($event as $key => $value) {
-                    if ($value != NULL && is_object($value)) {
-                        //if is type of CalendarEvent ....
-                        if (is_a($value, 'CalendarEvent') || is_a($value, 'SeminarEvent')) {
-                            if ($value->getPermission() >= 2) {
-                                $dates[$key] = array(
-                                    "date"         =>  date("r", $value->getStart()),
-                                    "title"        =>  $value->getTitle (),
-                                    "start"        =>  date("G:i", $value->getStart()),
-                                    "end"          =>  date("G:i", $value->getEnd()),
-                                    "description"  =>  $value->getDescription(),
-                                    "duration"     =>  date('H:i', $value->getDuration()),
-                                    "location"     =>  $value->getLocation());
-                            }
-                        }
-                    }
-                }
-            }
-
-            $monthDates[date("j", $act_stamp)] = $dates;
-        }
-
-        return $monthDates;
+        return \CalendarScheduleModel::getEntries($user->id, $current_semester, 0800, 2000, range(0, 6), false);
     }
 
-    static function getDayDates($user_id, $weekday)
+    static function getCalendar($user, $start, $end)
     {
-        //get current semester
-        $semdata = new \SemesterData();
-        $current_semester = $semdata->getCurrentSemesterData();
-        $current_semester_id = $current_semester['semester_id'];
+        $user_id = $user->id;
+        $_calendar = \Calendar::getInstance($user_id);
+        $events = new \DbCalendarEventList($_calendar, $start, $end, false, \Calendar::getBindSeminare($user_id), array());
 
-        return \CalendarScheduleModel::getEntries($user_id, $current_semester, 0800, 2000, array($weekday-1), false);
+        $termine = array();
+        while ($termin = $events->nextEvent()) {
+            $termine[] = array(
+                'id'          => $termin->id,
+                'sem_id'      => $termin->properties['SEM_ID'] ?: null,
+
+                'summary'     => $termin->getTitle(),
+                'begin'       => date('c', $termin->getStart()),
+                'end'         => date('c', $termin->getEnd()),
+
+                'description' => $termin->getDescription(),
+                'location'    => $termin->getLocation(),
+                'category'    => $termin->toStringCategories(),
+                'visibility'  => $termin->properties['CLASS'],
+                'recurrence'  => $termin->properties['RRULE']['rtype'] == 'SINGLE' ? false : $termin->toStringRecurrence()
+            );
+        }
+
+        return $termine;
     }
 }

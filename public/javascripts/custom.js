@@ -1,3 +1,15 @@
+jQuery(function($) {
+    $("#leftpanel").panel().enhanceWithin();
+});
+
+jQuery(document).on('pagecontainerhide', 'div', function (event, ui) {
+    var page = jQuery(event.target);
+
+    if (page.attr('data-cache') === 'never'){
+        page.remove();
+    }
+});
+
 // global counter of the
 var DROPBOX_COUNTER = 0;
 // global indicator for upload or login errors
@@ -49,7 +61,7 @@ function uploadFileDropbox(upload_url, fileid)
                 newLI.className         = "ui-li ui-li-static ui-body-b ui-corner-top ui-corner-bottom";
                 newLI.innerHTML =  data;
                 document.getElementById("uploadList").appendChild(newLI);
-                if (( DROPBBOX_FAIL == false ) && ( DROPBOX_COUNTER == 0 ))
+                if (( DROPBBOX_FAIL === false ) && ( DROPBOX_COUNTER === 0 ))
                 {
                     newLI                   = document.createElement("li");
                     newLI.innerHTML         = "Alle Dateien aktualisiert";

@@ -15,7 +15,7 @@ foreach ($resources AS $reso) {
 <div data-role="page" id="courses-show_map">
   <?= $this->render_partial('layouts/_side_menu') ?>
 
-  <div data-role="header"  data-theme="<?=TOOLBAR_THEME ?>">
+  <div data-role="header" data-theme="a">
     <?= $this->render_partial('layouts/_side_menu_link') ?>
     <h1>Karte</h1>
     <a href="javascript:history.back()" class="externallink"
@@ -23,7 +23,7 @@ foreach ($resources AS $reso) {
        data-iconpos="notext" data-theme="d"></a>
   </div><!-- /header -->
 
-  <div data-role="content">
+  <div class="ui-content" role="main">
 
 
     <?

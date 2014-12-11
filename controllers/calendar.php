@@ -10,16 +10,11 @@ require dirname(__FILE__) . "/../models/calendar.php";
  */
 class CalendarController extends AuthenticatedController
 {
-    function index_action($weekday = NULL)
+    function index_action()
     {
-        // if no weekday -> make one
-        if ($weekday == NULL) {
-            $weekday = date("N");
-        }
-        //give weekday to the view
-        $this->weekday = $weekday;
-        //get events for current weekday
-        $this->termine = CalendarModel::getDayDates($this->currentUser()->id, $weekday);
+        $semdata = new \SemesterData();
+        $this->current_semester = $semdata->getCurrentSemesterData();
+        $this->termine = CalendarModel::getDayDates($this->currentUser(), $this->current_semester);
     }
 
     function kalender_action($year = NULL, $month = NULL)
@@ -28,10 +23,28 @@ class CalendarController extends AuthenticatedController
         if (empty($year) || empty($month)) {
             $month = date("n");
             $year  = date("Y");
+            $this->stamp = time();
+        } else {
+            $this->stamp = mktime(0, 0, 0, $month, 1, $year);
         }
-        //make a timestamp for the date
-        $this->stamp = mktime(0,0,0,$month,1, $year);
-        //get dates of the month
-        $this->dates = CalendarModel::getMonthDates( $this->currentUser,$this->stamp );
+
+        $last_month    = $this->getEvents($year, $month - 1);
+        $current_month = $this->getEvents($year, $month);
+        $next_month    = $this->getEvents($year, $month + 1);
+
+        $this->events = array_merge($last_month, $current_month, $next_month);
+    }
+
+    function events_action($year, $month)
+    {
+        $this->render_json(@$this->getEvents($year, $month));
+    }
+
+    private function getEvents($year, $month)
+    {
+        $start = mktime(0, 0, 0, $month,     1, $year);
+        $end   = mktime(0, 0, 0, $month + 1, 1, $year);
+
+        return CalendarModel::getCalendar($this->currentUser(), $start, $end);
     }
 }

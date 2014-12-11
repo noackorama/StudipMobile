@@ -17,7 +17,7 @@ if (($dropCom != "connected"))
 	            finden.<br /><small>StudIp erhält nicht auf Ihre gesamte Dropbox Zugriff.</small>
 	    </li>
     </ul>
-    <a href="<?=$dropCom ?>" data-role="button" data-theme="b">StudIp verbinden</a>
+    <a href="<?=$dropCom ?>" role="button" class="ui-btn ui-btn-b">StudIp verbinden</a>
 	<?
 }
 elseif($dropCom == "connected")
@@ -64,7 +64,7 @@ elseif($dropCom == "connected")
 				{
 				    DROPBOX_COUNTER = 0;
 					var newLI           = document.createElement("li");
-					newLI.className         = "ui-li ui-li-static ui-body-b ui-corner-top ui-corner-bottom";
+					newLI.className         = "ui-li ui-li-static ui-body-b";
 					newLI.innerHTML =  "Ordnerstruktur angelegt. Sie können diese Seite nun verlassen.";
 					document.getElementById("uploadList").appendChild(newLI);
 				},
@@ -72,7 +72,7 @@ elseif($dropCom == "connected")
 				{
 					var newLI           = document.createElement("li");
 					newLI.innerHTML =  "Anlegen Ordnerstruktur fehlgeschlagen. Versuchen Sie es erneut.";
-					newLI.className         = "ui-li ui-li-static ui-body-b ui-corner-top ui-corner-bottom";
+					newLI.className         = "ui-li ui-li-static ui-body-b";
 					document.getElementById("uploadList").appendChild(newLI);
 				}
 			}).done(function() { 

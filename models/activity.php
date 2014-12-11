@@ -30,7 +30,7 @@ class Activity {
 
         $db = \DBManager::get();
         $now = time();
-        $chdate = $now - 24 * 60 * 60 * $days;
+        $chdate = (is_finite($days) && $days > 0) ? $now - 24 * 60 * 60 * $days : 0;
         $items = array();
         $limit = " LIMIT 100";
 
@@ -377,4 +377,34 @@ class Activity {
 
         return $items;
     }
+
+    const SMART_ACTIVITIES_THRESHOLD = 3;
+
+    public static function getSmartActivities($user, $course = null, $days = 1)
+    {
+        $activities = self::findAllByUser($user->id, $course->id, $days);
+
+        if (is_finite($days) && sizeof($activities) < self::SMART_ACTIVITIES_THRESHOLD) {
+            return self::getSmartActivities($user, $course, self::getNextInterval($days));
+        }
+
+        return array($days, $activities);
+    }
+
+
+    private static $intervals = array(1, 7, 30, 365);
+
+    public static function getNextInterval($days)
+    {
+        $next = NAN;
+        foreach (self::$intervals as $interval) {
+            if ($interval > $days) {
+                $next = $interval;
+                break;
+            }
+        }
+
+        return $next;
+    }
+
 }
