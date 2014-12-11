@@ -34,13 +34,13 @@ $categories = array(
               ->getImageTag(Avatar::SMALL,
                             array("class" => "ui-li-icon activity-avatar")) ?>
 
-  <?= _("von") ?> <?= Helper::out($activity['author']) ?>
+  <?= _("von") ?> <?= $this->out($activity['author']) ?>
 </p>
 
-<h3><?= Helper::out($activity['title']) ?></h3>
+<h3><?= $this->out($activity['title']) ?></h3>
 
 <p class=summary>
-  <?= Helper::out(strip_tags($activity['content'])) ?>
+  <?= $this->out(strip_tags($activity['content'])) ?>
 </p>
 
 <? if (!empty($activity["link"])){ ?>
