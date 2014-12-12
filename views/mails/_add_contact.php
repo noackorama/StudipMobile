@@ -1,7 +1,3 @@
-<?
-$show_filter = sizeof($contacts) > 4;
-?>
-
 <div data-role="popup" id=mail-show-contacts data-theme="c" style="max-width:400px;">
 
   <div data-role="header" data-theme="e">
@@ -15,29 +11,21 @@ $show_filter = sizeof($contacts) > 4;
       <a class="ui-btn ui-mini" role=button href="#mail-compose" data-rel=back>Abbrechen</a>
     </div>
 
-    <? if ($show_filter) : ?>
-        <form class="ui-filterable">
-            <input id="filter-input" data-type="search" placeholder="Filtern">
-        </form>
-    <? endif ?>
+    <form class="ui-filterable">
+        <input id="filter-input" data-type="search" placeholder="Filtern">
+    </form>
 
     <ul data-role=listview
-        <? if ($show_filter) : ?>
         data-filter="true" data-input="#filter-input"
-        <? endif ?>
         >
-      <? foreach ($contacts as $contact): ?>
+      <? if (false) foreach ($contacts as $contact): ?>
         <li class=contact>
 
-          <form>
-            <fieldset data-role=controlgroup data-iconpos=left>
-              <input type=checkbox id=checkbox-<?= $contact['id'] ?> data-id=<?= $contact['id'] ?>>
-              <label for=checkbox-<?= $contact['id'] ?>>
-                <img src="<?= $contact['img'] ?>">
-                <?= $this->out($contact['name']) ?>
-              </label>
-            </fieldset>
-          </form>
+          <input type=checkbox id=checkbox-<?= $contact['id'] ?> data-id=<?= $contact['id'] ?>>
+          <label for=checkbox-<?= $contact['id'] ?>>
+            <img src="<?= $contact['img'] ?>">
+            <?= $this->out($contact['name']) ?>
+          </label>
 
         </li>
       <? endforeach ?>
