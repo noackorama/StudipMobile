@@ -4,7 +4,7 @@
 
     <h3>Menü</h3>
 
-    <ul data-role="listview" data-theme=a class="nav-search" data-inset="false" id="menu_side">
+    <ul data-role="listview" data-theme=a data-inset="false">
 
      <li class="active" data-icon="false">
        <a href="<?= $controller->url_for("quickdial") ?>" class="externallink contentLink" data-ajax="false">
@@ -39,6 +39,9 @@
           <img src="<?= $icon_path ?>person.png"   class="ui-li-icon" />
           <?=_("Ich")?>
         </a>
+      </li>
+
+      <li data-role="list-divider">
       </li>
 
       <li data-icon="false">

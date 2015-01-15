@@ -31,3 +31,10 @@ $show_filter = sizeof($activities) > 4;
     </li>
   <? } ?>
 </ul>
+
+o<? if (is_finite($days)) : ?>
+  <a class="ui-btn more-activities"
+     href="<?= $controller->url_for('activities', array('days' => is_finite($nextInterval) ? $nextInterval : -1)) ?>">
+    Mehr
+  </a>
+<? endif ?>

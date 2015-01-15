@@ -1,5 +1,5 @@
 <?
-if ($days > 0) {
+if (is_finite($days)) {
   $page_title = sprintf(
     ngettext("Aktivitäten der letzten 24h" , "Aktivitäten der letzten %d Tage", $days),
     $days);
