@@ -33,5 +33,3 @@ $_dataAttributes['theme'] = $_dataAttributes['theme'] ?: 'c';
   <?= isset($additional_panel) ? $additional_panel : '' ?>
 
 </div>
-
-<?= $this->render_partial("layouts/_side_menu") ?>
