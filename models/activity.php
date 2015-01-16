@@ -351,7 +351,7 @@ class Activity {
         if ($notifications) {
             foreach ($notifications as $ce) {
 
-                $json = json_decode($ce->toJSON(), TRUE);
+                $json = studip_utf8decode(json_decode($ce->toJSON(), TRUE));
 
                 $url = $json['url'];
 
