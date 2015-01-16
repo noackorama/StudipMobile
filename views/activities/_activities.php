@@ -32,7 +32,7 @@ $show_filter = sizeof($activities) > 4;
   <? } ?>
 </ul>
 
-o<? if (is_finite($days)) : ?>
+<? if (is_finite($days)) : ?>
   <a class="ui-btn more-activities"
      href="<?= $controller->url_for('activities', array('days' => is_finite($nextInterval) ? $nextInterval : -1)) ?>">
     Mehr
