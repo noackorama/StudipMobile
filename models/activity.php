@@ -343,6 +343,9 @@ class Activity {
     {
         $items = array();
 
+        if (!$module) {
+            return $items;
+        }
         $notifications = $module->getNotificationObjects($id, $chdate, $user_id);
 
         if ($notifications) {
