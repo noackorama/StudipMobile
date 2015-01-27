@@ -313,6 +313,14 @@ class Activity {
                 $module = $sem_class->getModule($slot);
                 $items = array_merge($items, self::getNotificationObjects($sem_class, $module, $slot, $seminar['Seminar_id'], $chdate, $user_id));
             }
+
+            // workaround for v2.5 CoreForum that does not implement
+            // a working #getNotificationObjects
+            if (version_compare($GLOBALS['SOFTWARE_VERSION'], '3.0') < 0) {
+                $items = array_merge(
+                    $items,
+                    self::workaroundGetNotificationObjectsFromForum($user_id, $seminar['Seminar_id'], $chdate));
+            }
         }
 
         $stmt = \DBManager::get()->prepare("SELECT Institute.*
@@ -327,6 +335,14 @@ class Activity {
                 $class = 'Core' . $slot;
                 $module = new $class;
                 $items = array_merge($items, self::getNotificationObjects($sem_class, $module, $slot, $institute['Institut_id'], $chdate, $user_id));
+            }
+
+            // workaround for v2.5 CoreForum that does not implement
+            // a working #getNotificationObjects
+            if (version_compare($GLOBALS['SOFTWARE_VERSION'], '3.0') < 0) {
+                $items = array_merge(
+                    $items,
+                    self::workaroundGetNotificationObjectsFromForum($user_id, $institute['Institut_id'], $chdate));
             }
         }
 
@@ -379,6 +395,46 @@ class Activity {
         }
 
         return $items;
+    }
+
+    private function workaroundGetNotificationObjectsFromForum($user_id, $course_id, $since)
+    {
+        $contents = array();
+
+        if (\ForumPerm::has('search', $course_id, $user_id)) {
+
+            $postings = self::forumGetLatestSince($course_id, $since);
+
+            foreach ($postings as $post) {
+                $obj = get_object_name($course_id, 'sem');
+                $summary = sprintf(_('%s hat im Forum der Veranstaltung "%s" einen Forenbeitrag verfasst.'),
+                                   get_fullname($post['user_id']),
+                                   $obj['name']
+                );
+
+                $contents[] = array(
+                    'id'        => $post['topic_id'],
+                    'title'     => _('Forum: ') . $obj['name'],
+                    'author'    => $post['author'],
+                    'author_id' => $post['user_id'],
+                    'link'      => \PluginEngine::getURL('coreforum', array(), 'index/index/' . $post['topic_id'] .'?cid='. $course_id .'#'. $post['topic_id']),
+                    'updated'   => $post['mkdate'],
+                    'summary'   => $summary,
+                    'content'   => formatReady($post['content']),
+                    'category'  => 'forum'
+                );
+            }
+        }
+
+        return $contents;
+    }
+
+    private static function forumGetLatestSince($parent_id, $since)
+    {
+        $constraint = \ForumEntry::getConstraints($parent_id);
+        $stmt = \DBManager::get()->prepare("SELECT SQL_CALC_FOUND_ROWS * FROM forum_entries WHERE lft > ? AND rgt < ? AND seminar_id = ? AND mkdate >= ? ORDER BY name ASC");
+        $stmt->execute(array($constraint['lft'], $constraint['rgt'], $constraint['seminar_id'], $since));
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     const SMART_ACTIVITIES_THRESHOLD = 3;
