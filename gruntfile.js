@@ -2,6 +2,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-compress');
 
     var browserifyFiles = {
         './public/javascripts/bundle/page_calendar.js':
@@ -15,6 +18,7 @@ module.exports = function (grunt) {
     var lessFiles = ['./public/stylesheets/*.less'];
 
     grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
 
         less: {
             development: {
@@ -33,8 +37,8 @@ module.exports = function (grunt) {
                     cleancss: true
                 },
                 files: {
-                    'mobile.css': 'mobile.less',
-                    'studip.css': 'studip.less'
+                    'public/stylesheets/mobile.css': 'public/stylesheets/mobile.less',
+                    'public/stylesheets/studip.css': 'public/stylesheets/studip.less'
                 }
             }
         },
@@ -63,9 +67,35 @@ module.exports = function (grunt) {
                 'public/stylesheets/*.less'
             ],
             tasks: ['build']
+        },
+
+        // Clean the build folder
+        clean: {
+            build: {
+                src: ['build/', '<%= pkg.name %>.zip']
+            }
+        },
+
+        copy: {
+            build: {
+                src: ['**', '!node_modules/**', '!gruntfile.js', '!package.json', '!.git*', '!*.org'],
+                dest: 'build/'
+            }
+        },
+
+        // Compress the build folder into an upload-ready zip file
+        compress: {
+            build: {
+                options: {
+                    mode: 'zip',
+                    archive: '<%= pkg.name %>.zip'
+                },
+                cwd: 'build/',
+                src: ['**/*']
+            }
         }
     });
 
     grunt.registerTask('build', ['browserify:development', 'less:development']);
-    grunt.registerTask('dist',  ['browserify:production']);
+    grunt.registerTask('dist',  ['clean:build', 'browserify:production', 'less:production', 'copy:build', 'compress:build']);
 };
