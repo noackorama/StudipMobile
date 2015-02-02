@@ -394,7 +394,7 @@ class Activity {
             }
         }
 
-        return studip_utf8decode($items);
+        return $items;
     }
 
     private function workaroundGetNotificationObjectsFromForum($user_id, $course_id, $since)
