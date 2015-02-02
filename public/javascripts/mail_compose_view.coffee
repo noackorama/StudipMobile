@@ -56,7 +56,31 @@ class MailComposeView
       </li>
       """
 
+  contactListviewTemplate: _.memoize \
+    -> _.template """
+        <li class="contact">
+          <div class="ui-checkbox">
+            <label class="ui-btn ui-btn-inherit ui-btn-icon-left ui-checkbox-off">
+              <%- name %>
+            </label>
+            <input data-cacheval="false" id="checkbox-<%- id %>"
+                   data-id="<%- id %>" type="checkbox" data-enhanced=true>
+          </div>
+          <img class="ui-li-icon" src="<%- img %>"">
+        </li>
+    """
+
   setupContacts: (contacts) ->
+
+    listview = contacts.find 'ul'
+    template = @contactListviewTemplate()
+
+    for contact in @contacts
+      listview.append template contact
+      listview.listview 'refresh'
+
+    do listview.enhanceWithin
+
     contacts
       .on 'popupbeforeposition', =>
         do @clearSearch
@@ -68,6 +92,7 @@ class MailComposeView
         $(':checked', this)
           .prop 'checked', off
           .checkboxradio 'refresh'
+          .checkboxradio 'enable'
 
       .on 'click', '.select', =>
         for check in contacts.find ':checked'
@@ -162,7 +187,6 @@ class MailComposeView
     @
 
   removeRecipient: (id) ->
-    console.log "recipient removed #{id}"
     delete @mail.recipients[id]
 
     @$el.find(".selected #user-#{id}").remove()

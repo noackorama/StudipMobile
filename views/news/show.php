@@ -18,32 +18,32 @@ else {
 }
 ?>
 
-<ul data-role="listview">
+<ul class="news" data-role="listview">
   <li>
     <h3><?= $this->out($news->topic) ?></h3>
   </li>
 
   <li>
-    <p style="padding-top:12px;">
-      <strong>Von:</strong> <?= $this->out($news->author) ?>
-    </p>
-    <span class="ui-li-count"><?= $this->out(date("j.m.y h:i", $news->chdate)) ?></span>
+      <p class="news-author">
+          <strong>Von:</strong> <?= $this->out($news->author) ?>
+      </p>
+      <span class="news-chdate">
+          am <?= $this->out(date("j.m.y H:i", $news->chdate)) ?>
+      </span>
   </li>
 
+
   <? if (!$single_course): ?>
-      <li class=collapsible-listitem>
-          <div class="ui-mini" data-role="collapsible" data-inset=false>
-              <h6>in <?= sizeof($ranges) ?> Bereichen</h6>
-              <div>
-                  <?= $this->render_partial('news/_ranges') ?>
-              </div>
+      <li class="ui-mini" data-role="collapsible" data-iconpos="right" data-inset="false">
+          <h6>in <?= sizeof($ranges) ?> Bereichen</h6>
+          <div>
+              <?= $this->render_partial('news/_ranges') ?>
           </div>
       </li>
   </li>
   <? endif ?>
 
 </ul>
-<p style="font-family: Helvetica,Arial,sans-serif;font-size: 12px;font-weight: normal;white-space:wrap;">
-  <br />
+<p class="news-body">
   <?= $this->fout($news->body) ?>
 </p>

@@ -9,7 +9,7 @@ $_dataAttributes['theme'] = $_dataAttributes['theme'] ?: 'c';
      foreach ($_dataAttributes as $key => $value) {
          if ($value !== false) {
              printf(' data-%s="%s"', $key,
-                    Studip\Mobile\Helper::out($value));
+                    $this->out($value));
          }
      }
      ?>
@@ -33,5 +33,3 @@ $_dataAttributes['theme'] = $_dataAttributes['theme'] ?: 'c';
   <?= isset($additional_panel) ? $additional_panel : '' ?>
 
 </div>
-
-<?= $this->render_partial("layouts/_side_menu") ?>

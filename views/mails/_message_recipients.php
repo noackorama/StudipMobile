@@ -14,8 +14,7 @@
     </li>
 
   <? else : ?>
-    <li class="collapsible-listitem">
-      <div class=message-receivers data-role="collapsible" data-inset=false data-theme="c" data-content-theme="d">
+    <li class=message-receivers data-role="collapsible" data-iconpos="right" data-inset="true" data-theme="c" data-content-theme="d">
         <h4>an <?= $num ?> Empfänger</h4>
         <ul data-role="listview">
           <? foreach ($mail['receivers'] as $rec_id => $receiver) : ?>
@@ -27,7 +26,6 @@
             </li>
           <? endforeach ?>
         </ul>
-      </div>
     </li>
   <? endif ?>
 <? endif ?>

@@ -5,5 +5,5 @@
    role=button
    data-inline=true
    <? endif ?>>
-  <?= \Studip\Mobile\Helper::out($filename) ?>
+  <?= $this->out($filename) ?>
 </a>

@@ -1,7 +1,7 @@
 <div data-role="popup" id="<?= $popup_id ?>" class="ui-content" data-theme="e" style="max-width:350px;">
   <p>
     <?= _("Dateiname") ?>:
-    <?= Studip\Mobile\Helper::out($file["filename"]) ?>
+    <?= $this->out($file["filename"]) ?>
   </p>
   <p>
     <?= _("Dateigröße") ?>:
@@ -9,7 +9,7 @@
   </p>
   <p>
     <?= _("Von") ?>:
-    <?= Studip\Mobile\Helper::out($file["author"]) ?>
+    <?= $this->out($file["author"]) ?>
   </p>
   <p>
     <?= _("Datum") ?>:
@@ -18,7 +18,7 @@
   <? if (trim($file["description"]) !== '') : ?>
     <p>
       <?= _("Beschreibung") ?>:
-      <?= Studip\Mobile\Helper::out($file["description"]) ?>
+      <?= $this->out($file["description"]) ?>
     </p>
   <? endif ?>
 </div>

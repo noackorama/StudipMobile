@@ -13,7 +13,7 @@
                 required></textarea>
     </div>
 
-    <button type=submit data-corners=false>Absenden</button>
+    <button type=submit>Absenden</button>
 
   </form>
 

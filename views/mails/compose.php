@@ -58,7 +58,7 @@ STUDIP.Mobile.bootstraps.contacts = <?= $contacts ? json_encode($contacts) : 'nu
   </li>
 
   <li>
-    <button id=send>Abschicken</button>
+    <input type=submit id=send value=Abschicken>
   </li>
 </ul>
 

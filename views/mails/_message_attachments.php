@@ -18,23 +18,20 @@
 
 <? } else { ?>
 
-  <li class=collapsible-listitem>
-    <div class="message-many-attachments" data-role="collapsible" data-theme="c" data-content-theme="d">
+  <li class="message-many-attachments" data-role="collapsible" data-iconpos="right" data-inset="true" data-theme="c" data-content-theme="d">
       <h4>
-        <? printf(ngettext("1 angehängte Datei", "%d angehängte Dateien", $num), $num) ?>
+          <? printf(ngettext("1 angehängte Datei", "%d angehängte Dateien", $num), $num) ?>
       </h4>
 
       <ul data-role="listview" data-inset="false">
-        <? foreach ($mail['attachments'] as $attachment) { ?>
-          <li>
-            <?= $this->render_partial('mails/_attachment_btn',
-                                      array(
-                  'attachment_id' => $attachment['dokument_id'],
-                  'filename' => $attachment['name'])) ?>
-          </li>
-        <? } ?>
+          <? foreach ($mail['attachments'] as $attachment) { ?>
+              <li>
+                  <?= $this->render_partial('mails/_attachment_btn',
+                                            array(
+                          'attachment_id' => $attachment['dokument_id'],
+                          'filename' => $attachment['name'])) ?>
+              </li>
+          <? } ?>
       </ul>
-    </div>
-
   </li>
 <? } ?>

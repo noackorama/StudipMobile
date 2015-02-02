@@ -38,18 +38,18 @@
 
     <? if ($data["user_data"]["home"] && is_element_visible_for_user($cuid, $user_id, $visibilities['homepage'])) { ?>
         <div class="ui-block-a">Homepage (privat)</div>
-        <div class="ui-block-b"><?=\Studip\Mobile\Helper::fout( $data["user_data"]["home"]) ?>
+        <div class="ui-block-b"><?= $this->fout( $data["user_data"]["home"]) ?>
       </div>
     <? } ?>
 
     <? if ($data["user_data"]["hobby"] && is_element_visible_for_user($cuid, $user_id, $visibilities['hobby'])) { ?>
         <div class="ui-block-a">Hobbys</div>
-        <div class="ui-block-b"><?= \Studip\Mobile\Helper::fout($data["user_data"]["hobby"]) ?></div>
+        <div class="ui-block-b"><?= $this->fout($data["user_data"]["hobby"]) ?></div>
     <? } ?>
 
     <? if ($data["user_data"]["lebenslauf"] && is_element_visible_for_user($cuid, $user_id, $visibilities['lebenslauf'])) { ?>
         <div class="ui-block-a">Lebenslauf</div>
-        <div class="ui-block-b"><?=Studip\Mobile\Helper::fout($data["user_data"]["lebenslauf"]) ?></div>
+        <div class="ui-block-b"><?= $this->fout($data["user_data"]["lebenslauf"]) ?></div>
     <? } ?>
 
   <? if (strlen($contact_string = trim(ob_get_clean()))) { ?>

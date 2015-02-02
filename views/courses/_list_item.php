@@ -5,11 +5,11 @@
         <?= $this->out($course['Name']) ?>
 
         <? if ($course['sem_nr']) : ?>
-            <small class="sem_nr">(<?= $course['sem_nr'] ?>)</small>
+            <small class="sem_nr">(<?= $this->out($course['sem_nr']) ?>)</small>
         <? endif ?>
     </h3>
     <? if ($course['Untertitel']) : ?>
-        <p class="untertitel"><?= $course['Untertitel'] ?></p>
+        <p class="untertitel"><?= $this->out($course['Untertitel']) ?></p>
     <? endif ?>
   </a>
 </li>

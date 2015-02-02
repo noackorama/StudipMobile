@@ -7,13 +7,13 @@
 
       <h3>
         <? $sem = Seminar::getInstance($date->getRangeId()) ?>
-        <?=Studip\Mobile\Helper::out($sem->name) ?>
+        <?= $this->out($sem->name) ?>
       </h3>
 
       <p>
         <?= $date->toString() ?>
         <? if ($room = $date->getRoom()) : ?>
-          in <?= Studip\Mobile\Helper::out($room) ?>
+          in <?= $this->out($room) ?>
         <? endif ?>
       </p>
 

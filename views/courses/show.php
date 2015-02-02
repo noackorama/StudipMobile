@@ -1,5 +1,5 @@
 <?
-$this->setPageOptions('courses-show', $course->name);
+$this->setPageOptions('courses-show', $this->out($course->name));
 
 // check if there are Geolocations
 $resources_locations = array_filter($resources, function ($resource) {
@@ -11,10 +11,10 @@ $resources_locations = array_filter($resources, function ($resource) {
     <small>
         <?= $this->out($GLOBALS['SEM_TYPE'][$course->status]['name']) ?>:
     </small>
-    <?= Studip\Mobile\Helper::out($course->name) ?>
+    <?= $this->out($course->name) ?>
 </h2>
 <? if ($course->subtitle) { ?>
-    <h4><?= Studip\Mobile\Helper::out($course->subtitle) ?></h4>
+    <h4><?= $this->out($course->subtitle) ?></h4>
 <? } ?>
 
 

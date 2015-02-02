@@ -29,15 +29,12 @@
       </li>
     <? } ?>
 
-    <li class=collapsible-listitem>
-      <div data-role="collapsible" data-theme="c"
-      data-content-theme="c" data-inset=false>
+    <li data-role="collapsible" data-iconpos="right" data-inset="true">
         <h3>Alle Termine</h3>
-        <div>
-          <? $sem = Seminar::getInstance($course->id) ?>
-          <?= nl2br($this->out($sem->getDatesExport())) ?>
-        </div>
-      </div>
+        <p>
+            <? $sem = Seminar::getInstance($course->id) ?>
+            <?= nl2br($this->out($sem->getDatesExport())) ?>
+        </p>
     </li>
 
   <? endif ?>
